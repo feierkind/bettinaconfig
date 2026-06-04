@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bettina – Konfiguration | Akoba</title>
+<style>
+  :root {
+    --orange: #D85A30;
+    --orange-dark: #993C1D;
+    --orange-light: #FAECE7;
+    --green: #3B6D11;
+    --green-light: #EAF3DE;
+    --blue-light: #E6F1FB;
+    --blue: #185FA5;
+    --amber-light: #FAEEDA;
+    --amber: #854F0B;
+    --red-light: #FCEBEB;
+    --red: #A32D2D;
+    --gray: #5F5E5A;
+    --gray-light: #F1EFE8;
+    --border: #e0ddd8;
+    --text: #1a1a18;
+    --text-muted: #6b6a66;
+    --bg: #f8f7f4;
+    --card: #ffffff;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+
+  /* LOGIN */
+  #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+  .login-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; width: 100%; max-width: 420px; }
+  .login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+  .login-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--orange-light); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600; color: var(--orange); }
+  .login-title { font-size: 18px; font-weight: 600; }
+  .login-sub { font-size: 13px; color: var(--text-muted); }
+  .login-field { margin-bottom: 1rem; }
+  .login-field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; }
+  .login-field textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; font-family: monospace; resize: none; background: var(--bg); color: var(--text); word-break: break-all; }
+  .login-field textarea:focus { outline: none; border-color: var(--orange); }
+  .char-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; display: flex; justify-content: space-between; }
+  .login-btn { width: 100%; padding: 11px; background: var(--orange); color: white; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; margin-top: .5rem; }
+  .login-btn:hover { background: var(--orange-dark); }
+  .login-error { background: var(--red-light); color: var(--red); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 13px; margin-top: .75rem; display: none; }
+
+  /* LAYOUT */
+  #app { display: none; min-height: 100vh; }
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; gap: 12px; height: 56px; position: sticky; top: 0; z-index: 100; }
+  .topbar-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--orange-light); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: var(--orange); }
+  .topbar-title { font-size: 15px; font-weight: 600; }
+  .topbar-sub { font-size: 12px; color: var(--text-muted); }
+  .status-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 10px; background: var(--green-light); color: var(--green); border-radius: 20px; font-weight: 500; margin-left: auto; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .logout-btn { padding: 5px 12px; font-size: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; cursor: pointer; color: var(--text-muted); margin-left: 8px; }
+  .logout-btn:hover { background: var(--bg); }
+
+  .main { display: flex; }
+  .sidebar { width: 200px; flex-shrink: 0; padding: 1.25rem 0; border-right: 1px solid var(--border); background: var(--card); min-height: calc(100vh - 56px); }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 1.25rem; font-size: 13px; cursor: pointer; color: var(--text-muted); border-left: 3px solid transparent; transition: all .15s; }
+  .nav-item:hover { background: var(--bg); color: var(--text); }
+  .nav-item.active { color: var(--orange); border-left-color: var(--orange); background: var(--orange-light); font-weight: 500; }
+  .nav-icon { font-size: 16px; width: 18px; text-align: center; }
+
+  .content { flex: 1; padding: 1.5rem; max-width: 760px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel-title { font-size: 17px; font-weight: 600; margin-bottom: 1.25rem; }
+
+  /* CARDS */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+  .card-title { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1rem; }
+
+  /* FORMS */
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; font-weight: 500; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 13px; background: var(--bg); color: var(--text); font-family: inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--orange); }
+  .field textarea { resize: vertical; min-height: 80px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  /* TOGGLE */
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .toggle-row:first-child { padding-top: 0; }
+  .toggle-label { font-size: 13px; font-weight: 500; }
+  .toggle-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .toggle { position: relative; width: 38px; height: 22px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 11px; cursor: pointer; transition: .2s; }
+  .toggle-slider:before { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; left: 3px; top: 3px; background: white; transition: .2s; }
+  .toggle input:checked + .toggle-slider { background: var(--green); }
+  .toggle input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+  /* BUTTONS */
+  .btn { padding: 8px 16px; font-size: 13px; cursor: pointer; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; color: var(--text); transition: background .15s; font-weight: 500; }
+  .btn:hover { background: var(--bg); }
+  .btn-primary { background: var(--orange); color: white; border-color: transparent; }
+  .btn-primary:hover { background: var(--orange-dark); }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  .btn-icon { width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center; }
+  .btn-danger { color: var(--red); border-color: transparent; }
+  .btn-danger:hover { background: var(--red-light); }
+
+  /* BADGES */
+  .badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 500; }
+  .badge-faq { background: var(--blue-light); color: var(--blue); }
+  .badge-preise { background: var(--amber-light); color: var(--amber); }
+  .badge-prozesse { background: #E1F5EE; color: #0F6E56; }
+  .badge-produkte { background: #EEEDFE; color: #534AB7; }
+  .badge-partner { background: var(--red-light); color: var(--red); }
+  .badge-sonstiges { background: var(--gray-light); color: var(--gray); }
+  .badge-aktiv { background: var(--green-light); color: var(--green); }
+  .badge-inaktiv { background: var(--gray-light); color: var(--gray); }
+
+  /* EMPLOYEE CARDS */
+  .emp-list { display: flex; flex-direction: column; gap: 0; }
+  .emp-row { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .emp-row:last-child { border-bottom: none; }
+  .emp-row:first-child { padding-top: 0; }
+  .emp-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; flex-shrink: 0; }
+  .emp-name { font-size: 14px; font-weight: 600; }
+  .emp-role { font-size: 12px; color: var(--text-muted); margin: 2px 0 6px; }
+  .emp-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .emp-tag { font-size: 11px; padding: 2px 7px; border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); }
+  .emp-actions { display: flex; gap: 4px; align-items: center; }
+
+  /* KB */
+  .kb-item { display: flex; align-items: start; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border); }
+  .kb-item:last-child { border-bottom: none; }
+  .kb-item:first-child { padding-top: 0; }
+  .kb-content { flex: 1; }
+  .kb-title { font-size: 13px; font-weight: 600; }
+  .kb-preview { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+  .kb-actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+  /* RULES */
+  .rule-row { display: grid; grid-template-columns: 1fr 24px 1fr 32px; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .rule-arrow { text-align: center; color: var(--text-muted); font-size: 16px; }
+
+  /* SAVE BAR */
+  .save-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .save-hint { font-size: 12px; color: var(--text-muted); }
+
+  /* TOAST */
+  #toast { position: fixed; bottom: 20px; right: 20px; padding: 10px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; color: white; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 9999; }
+  #toast.show { opacity: 1; }
+
+  /* FORM SECTION */
+  .form-section { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-top: 1rem; display: none; }
+  .form-section.open { display: block; }
+  .form-title { font-size: 13px; font-weight: 600; margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-avatar">B</div>
+      <div>
+        <div class="login-title">Bettina</div>
+        <div class="login-sub">Digitale Sekretärin · Akoba</div>
+      </div>
+    </div>
+    <div class="login-field">
+      <label>Supabase Project URL</label>
+      <textarea id="login-url" rows="2" placeholder="https://abcdefgh.supabase.co" oninput="updateCount('login-url','cnt-url')"></textarea>
+      <div class="char-hint"><span>Endet auf .supabase.co</span><span id="cnt-url">0 Zeichen</span></div>
+    </div>
+    <div class="login-field">
+      <label>Anon Key (public)</label>
+      <textarea id="login-key" rows="3" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." oninput="updateCount('login-key','cnt-key')"></textarea>
+      <div class="char-hint"><span>Langer JWT-Token – muss vollständig eingefügt werden</span><span id="cnt-key">0 Zeichen</span></div>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Verbinden &amp; einloggen</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-avatar">B</div>
+    <div>
+      <div class="topbar-title">Bettina</div>
+      <div class="topbar-sub">Akoba – Digitale Sekretärin</div>
+    </div>
+    <div class="status-pill"><div class="status-dot"></div>verbunden</div>
+    <button class="logout-btn" onclick="doLogout()">Abmelden</button>
+  </div>
+  <div class="main">
+    <div class="sidebar">
+      <div class="nav-item active" onclick="showPanel('mitarbeiter',this)"><span class="nav-icon">👥</span>Mitarbeiter</div>
+      <div class="nav-item" onclick="showPanel('verhalten',this)"><span class="nav-icon">⚙️</span>Verhalten</div>
+      <div class="nav-item" onclick="showPanel('zeiten',this)"><span class="nav-icon">🕐</span>Geschäftszeiten</div>
+      <div class="nav-item" onclick="showPanel('wissen',this)"><span class="nav-icon">📚</span>Wissensbasis</div>
+      <div class="nav-item" onclick="showPanel('regeln',this)"><span class="nav-icon">↪️</span>Weiterleitungen</div>
+      <div class="nav-item" onclick="showPanel('import',this)"><span class="nav-icon">📥</span>Daten importieren</div>
+    </div>
+    <div class="content">
+
+      <!-- MITARBEITER -->
+      <div class="panel active" id="panel-mitarbeiter">
+        <div class="panel-title">Mitarbeiter</div>
+        <div class="card">
+          <div class="emp-list" id="emp-list"><div style="color:var(--text-muted);font-size:13px;">Lade...</div></div>
+        </div>
+        <div class="form-section" id="emp-form">
+          <div class="form-title" id="emp-form-title">Mitarbeiter hinzufügen</div>
+          <input type="hidden" id="emp-edit-id">
+          <div class="row2">
+            <div class="field"><label>Name</label><input type="text" id="emp-name" placeholder="z.B. Thomas"></div>
+            <div class="field"><label>Rolle</label><input type="text" id="emp-rolle" placeholder="z.B. Bauleiter"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>WhatsApp (intern)</label><input type="text" id="emp-wa" placeholder="+49 171 ..."></div>
+            <div class="field"><label>E-Mail (intern)</label><input type="text" id="emp-email" placeholder="name@akoba.de"></div>
+          </div>
+          <div class="field"><label>Zuständig für (kommagetrennt)</label><input type="text" id="emp-zustaendig" placeholder="dach, fassade, angebote"></div>
+          <div style="display:flex;gap:8px;margin-top:.5rem;">
+            <button class="btn btn-primary" onclick="saveEmployee()">Speichern</button>
+            <button class="btn" onclick="closeEmpForm()">Abbrechen</button>
+          </div>
+        </div>
+        <button class="btn" style="margin-top:.75rem;" onclick="openEmpForm()">+ Mitarbeiter hinzufügen</button>
+      </div>
+
+      <!-- VERHALTEN -->
+      <div class="panel" id="panel-verhalten">
+        <div class="panel-title">Bettinas Verhalten</div>
+        <div class="card">
+          <div class="card-title">Kommunikationsstil</div>
+          <div class="row2">
+            <div class="field"><label>Ton</label>
+              <select id="cfg-ton">
+                <option value="förmlich">Förmlich (Sie)</option>
+                <option value="freundlich">Freundlich</option>
+                <option value="locker">Locker (Du)</option>
+              </select>
+            </div>
+            <div class="field"><label>Sprache</label>
+              <select id="cfg-sprache">
+                <option value="de">Deutsch</option>
+                <option value="en">Englisch</option>
+                <option value="de+en">Zweisprachig</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Maximale Antwortlänge (Zeichen)</label><input type="number" id="cfg-laenge" value="300" min="100" max="1000"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Was Bettina selbst beantwortet</div>
+          <div class="toggle-row">
+            <div><div class="toggle-label">Preisanfragen</div><div class="toggle-sub">Allgemeine Preisinformationen</div></div>
+            <label class="toggle"><input type="checkbox" id="t-preise" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-label">Öffnungszeiten &amp; Kontakt</div></div>
+            <label class="toggle"><input type="checkbox" id="t-kontakt" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-label">Allgemeine FAQs</div></div>
+            <label class="toggle"><input type="checkbox" id="t-faq" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-label">Terminvereinbarung</div></div>
+            <label class="toggle"><input type="checkbox" id="t-termine" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-label">Reklamationen direkt weiterleiten</div></div>
+            <label class="toggle"><input type="checkbox" id="t-rekla"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">E-Mail-Signatur</div>
+          <div class="field" style="margin:0;"><textarea id="cfg-signatur" rows="4">Herzliche Grüße
+Bettina
+Digitale Assistentin | Akoba</textarea></div>
+        </div>
+        <div class="save-bar">
+          <span class="save-hint">Wird in Supabase gespeichert</span>
+          <button class="btn btn-primary" onclick="saveVerhalten()">Änderungen speichern</button>
+        </div>
+      </div>
+
+      <!-- ZEITEN -->
+      <div class="panel" id="panel-zeiten">
+        <div class="panel-title">Geschäftszeiten</div>
+        <div class="card">
+          <div class="card-title">Wann ist Bettina aktiv</div>
+          <div class="field"><label>Arbeitstage</label>
+            <select id="cfg-tage">
+              <option value="Mo-Fr">Montag – Freitag</option>
+              <option value="Mo-Sa">Montag – Samstag</option>
+              <option value="Mo-So">Täglich</option>
+            </select>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Beginn</label><input type="time" id="cfg-start" value="08:00"></div>
+            <div class="field"><label>Ende</label><input type="time" id="cfg-ende" value="17:00"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Außerhalb der Geschäftszeiten</div>
+          <div class="toggle-row" style="padding-top:0;">
+            <div><div class="toggle-label">Automatische Antwort senden</div></div>
+            <label class="toggle"><input type="checkbox" id="cfg-ausserhalb-aktiv" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="field" style="margin-top:1rem;">
+            <label>Nachrichtentext</label>
+            <textarea id="cfg-ausserhalb" rows="4">Vielen Dank für Ihre Nachricht! Unsere Bürozeiten sind Mo–Fr 8–17 Uhr. Wir melden uns schnellstmöglich bei Ihnen. 🏗️</textarea>
+          </div>
+        </div>
+        <div class="save-bar">
+          <span class="save-hint">Wird in Supabase gespeichert</span>
+          <button class="btn btn-primary" onclick="saveZeiten()">Änderungen speichern</button>
+        </div>
+      </div>
+
+      <!-- WISSENSBASIS -->
+      <div class="panel" id="panel-wissen">
+        <div class="panel-title">Wissensbasis</div>
+        <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;">
+          <button class="btn btn-sm" id="kf-alle" onclick="filterKb('alle',this)" style="border-color:var(--orange);color:var(--orange);">Alle</button>
+          <button class="btn btn-sm" id="kf-faq" onclick="filterKb('faq',this)">FAQ</button>
+          <button class="btn btn-sm" id="kf-preise" onclick="filterKb('preise',this)">Preise</button>
+          <button class="btn btn-sm" id="kf-prozesse" onclick="filterKb('prozesse',this)">Prozesse</button>
+          <button class="btn btn-sm" id="kf-produkte" onclick="filterKb('produkte',this)">Produkte</button>
+          <button class="btn btn-sm" id="kf-partner" onclick="filterKb('partner',this)">Partner</button>
+          <input type="text" id="kb-search" placeholder="Suchen..." style="margin-left:auto;width:180px;padding:5px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;" oninput="renderKb()">
+        </div>
+        <div class="card">
+          <div id="kb-list"><div style="color:var(--text-muted);font-size:13px;">Lade...</div></div>
+        </div>
+        <div class="form-section" id="kb-form">
+          <div class="form-title">Neuer Wissenseintrag</div>
+          <input type="hidden" id="kb-edit-id">
+          <div class="row2">
+            <div class="field"><label>Kategorie</label>
+              <select id="kb-kat">
+                <option value="faq">FAQ</option>
+                <option value="preise">Preise</option>
+                <option value="prozesse">Prozesse</option>
+                <option value="produkte">Produkte</option>
+                <option value="partner">Partner</option>
+                <option value="sonstiges">Sonstiges</option>
+              </select>
+            </div>
+            <div class="field"><label>Titel</label><input type="text" id="kb-titel" placeholder="Kurzer Titel"></div>
+          </div>
+          <div class="field"><label>Inhalt</label><textarea id="kb-inhalt" rows="5" placeholder="Was Bettina wissen soll..."></textarea></div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" onclick="saveKb()">Speichern</button>
+            <button class="btn" onclick="closeKbForm()">Abbrechen</button>
+          </div>
+        </div>
+        <button class="btn" style="margin-top:.75rem;" onclick="openKbForm()">+ Eintrag hinzufügen</button>
+      </div>
+
+      <!-- WEITERLEITUNGEN -->
+      <div class="panel" id="panel-regeln">
+        <div class="panel-title">Weiterleitungsregeln</div>
+        <div class="card">
+          <div class="card-title">Stichwort → Mitarbeiter</div>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:1rem;">Wenn ein Kunde über dieses Thema schreibt, leitet Bettina automatisch weiter an:</p>
+          <div id="rules-list"></div>
+          <button class="btn btn-sm" style="margin-top:.75rem;" onclick="addRule()">+ Regel hinzufügen</button>
+        </div>
+        <div class="save-bar">
+          <span class="save-hint">Wird als JSON in bettina_config gespeichert</span>
+          <button class="btn btn-primary" onclick="saveRegeln()">Regeln speichern</button>
+        </div>
+      </div>
+
+      <!-- IMPORT -->
+      <div class="panel" id="panel-import">
+        <div class="panel-title">Daten importieren</div>
+
+        <div class="card">
+          <div class="card-title">Wissensbasis – Akoba Grunddaten</div>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:1rem;">Klick auf den Button um alle 31 vorbereiteten Akoba-Einträge (FAQ, Produkte, Preise, Partner, Prozesse) in einem Block nach Supabase zu importieren. Bereits vorhandene Einträge werden übersprungen.</p>
+          <div id="import-kb-progress" style="display:none;margin-bottom:.75rem;">
+            <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:6px;">
+              <div id="import-kb-bar" style="height:100%;background:var(--green);border-radius:2px;width:0%;transition:width .3s;"></div>
+            </div>
+            <div id="import-kb-status" style="font-size:12px;color:var(--text-muted);"></div>
+          </div>
+          <button class="btn btn-primary" id="import-kb-btn" onclick="importKbAkoba()">📥 31 Akoba-Einträge importieren</button>
+        </div>
+
+        <div class="card" style="margin-top:1rem;">
+          <div class="card-title">Eigene Daten importieren (JSON)</div>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:1rem;">JSON-Array hier reinkopieren und Zieltabelle wählen. Jedes Objekt wird als eine Zeile eingefügt.</p>
+          <div class="field">
+            <label>Zieltabelle</label>
+            <select id="import-table">
+              <option value="knowledge_base">knowledge_base (Wissensbasis)</option>
+              <option value="employees">employees (Mitarbeiter)</option>
+              <option value="bettina_config">bettina_config (Konfiguration)</option>
+              <option value="open_tasks">open_tasks (Aufgaben)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>JSON-Daten</label>
+            <textarea id="import-json" rows="10" placeholder='[
+  {
+    "kategorie": "faq",
+    "titel": "Beispielfrage",
+    "inhalt": "Beispielantwort...",
+    "aktiv": true
+  }
+]'></textarea>
+          </div>
+          <div id="import-custom-progress" style="display:none;margin-bottom:.75rem;">
+            <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:6px;">
+              <div id="import-custom-bar" style="height:100%;background:var(--green);border-radius:2px;width:0%;transition:width .3s;"></div>
+            </div>
+            <div id="import-custom-status" style="font-size:12px;color:var(--text-muted);"></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <button class="btn btn-primary" onclick="importCustom()">📥 Importieren</button>
+            <button class="btn" onclick="document.getElementById('import-json').value=''">Leeren</button>
+            <span id="import-json-count" style="font-size:12px;color:var(--text-muted);margin-left:auto;"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+let SB_URL = '';
+let SB_KEY = '';
+let KB_DATA = [];
+let KB_FILTER = 'alle';
+let EMP_COLORS = [
+  ['#E6F1FB','#185FA5'],['#E1F5EE','#0F6E56'],['#FAEEDA','#854F0B'],
+  ['#EEEDFE','#534AB7'],['#FAECE7','#993C1D'],['#EAF3DE','#3B6D11']
+];
+
+function updateCount(srcId, cntId) {
+  const v = document.getElementById(srcId).value.trim();
+  document.getElementById(cntId).textContent = v.length + ' Zeichen';
+}
+
+async function doLogin() {
+  const url = document.getElementById('login-url').value.trim().replace(/\/$/, '');
+  const key = document.getElementById('login-key').value.trim();
+  const err = document.getElementById('login-error');
+  err.style.display = 'none';
+
+  if (!url || !url.startsWith('https://')) { showLoginError('URL ungültig – muss mit https:// beginnen'); return; }
+  if (!key || key.length < 50) { showLoginError('Anon Key zu kurz oder fehlt'); return; }
+
+  try {
+    const res = await fetch(`${url}/rest/v1/bettina_config?select=schluessel&limit=1`, {
+      headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
+    });
+    if (!res.ok) {
+      const txt = await res.text();
+      if (res.status === 401) showLoginError('Key ungültig (401) – komplett kopiert?');
+      else if (res.status === 404) showLoginError('Tabellen nicht gefunden (404) – SQL-Script ausgeführt?');
+      else showLoginError('Fehler ' + res.status + ': ' + txt.substring(0,80));
+      return;
+    }
+    SB_URL = url;
+    SB_KEY = key;
+    localStorage.setItem('sb_url', url);
+    localStorage.setItem('sb_key', key);
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+  } catch(e) {
+    showLoginError('Netzwerkfehler: ' + e.message);
+  }
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function doLogout() {
+  SB_URL = ''; SB_KEY = '';
+  localStorage.removeItem('sb_url'); localStorage.removeItem('sb_key');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+async function sbGet(table, query='') {
+  const res = await fetch(`${SB_URL}/rest/v1/${table}${query}`, {
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function sbPost(table, data) {
+  const res = await fetch(`${SB_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+async function sbPatch(table, id, data) {
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+async function sbPatchKey(table, key, data) {
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?schluessel=eq.${encodeURIComponent(key)}`, {
+    method: 'PATCH',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+async function sbDelete(table, id) {
+  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'DELETE',
+    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+function showToast(msg, err) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = err ? '#A32D2D' : '#3B6D11';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function showPanel(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+async function loadAll() {
+  loadEmployees();
+  loadConfig();
+  loadKb();
+  loadRegeln();
+}
+
+/* ── MITARBEITER ── */
+async function loadEmployees() {
+  try {
+    const rows = await sbGet('employees', '?order=name');
+    renderEmployees(rows);
+  } catch(e) { showToast('Fehler beim Laden der Mitarbeiter', true); }
+}
+
+function renderEmployees(rows) {
+  const list = document.getElementById('emp-list');
+  if (!rows.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:13px;">Noch keine Mitarbeiter angelegt.</div>'; return; }
+  list.innerHTML = rows.map((r, i) => {
+    const c = EMP_COLORS[i % EMP_COLORS.length];
+    const tags = (r.zustaendig_fuer||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="emp-tag">${t}</span>`).join('');
+    return `<div class="emp-row">
+      <div class="emp-avatar" style="background:${c[0]};color:${c[1]};">${(r.name||'?')[0].toUpperCase()}</div>
+      <div>
+        <div class="emp-name">${r.name}</div>
+        <div class="emp-role">${r.rolle||''}</div>
+        <div class="emp-tags">${tags}</div>
+      </div>
+      <div class="emp-actions">
+        <span class="badge ${r.aktiv?'badge-aktiv':'badge-inaktiv'}">${r.aktiv?'aktiv':'inaktiv'}</span>
+        <button class="btn btn-icon btn-sm" onclick="editEmployee('${r.id}','${r.name}','${r.rolle||''}','${r.whatsapp||''}','${r.email||''}','${(r.zustaendig_fuer||'').replace(/'/g,"\\'")}')">✏️</button>
+        <button class="btn btn-icon btn-sm btn-danger" onclick="deleteEmployee('${r.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openEmpForm() { document.getElementById('emp-form').classList.add('open'); document.getElementById('emp-form-title').textContent = 'Mitarbeiter hinzufügen'; document.getElementById('emp-edit-id').value = ''; ['emp-name','emp-rolle','emp-wa','emp-email','emp-zustaendig'].forEach(id => document.getElementById(id).value = ''); }
+function closeEmpForm() { document.getElementById('emp-form').classList.remove('open'); }
+
+function editEmployee(id, name, rolle, wa, email, zust) {
+  openEmpForm();
+  document.getElementById('emp-form-title').textContent = 'Mitarbeiter bearbeiten';
+  document.getElementById('emp-edit-id').value = id;
+  document.getElementById('emp-name').value = name;
+  document.getElementById('emp-rolle').value = rolle;
+  document.getElementById('emp-wa').value = wa;
+  document.getElementById('emp-email').value = email;
+  document.getElementById('emp-zustaendig').value = zust;
+}
+
+async function saveEmployee() {
+  const name = document.getElementById('emp-name').value.trim();
+  if (!name) { showToast('Name erforderlich', true); return; }
+  const data = { name, rolle: document.getElementById('emp-rolle').value.trim(), whatsapp: document.getElementById('emp-wa').value.trim(), email: document.getElementById('emp-email').value.trim(), zustaendig_fuer: document.getElementById('emp-zustaendig').value.trim(), aktiv: true };
+  try {
+    const editId = document.getElementById('emp-edit-id').value;
+    if (editId) await sbPatch('employees', editId, data);
+    else await sbPost('employees', data);
+    closeEmpForm();
+    await loadEmployees();
+    showToast('Mitarbeiter gespeichert');
+  } catch(e) { showToast('Fehler: ' + e.message, true); }
+}
+
+async function deleteEmployee(id) {
+  if (!confirm('Mitarbeiter wirklich löschen?')) return;
+  try { await sbDelete('employees', id); await loadEmployees(); showToast('Mitarbeiter gelöscht'); }
+  catch(e) { showToast('Fehler: ' + e.message, true); }
+}
+
+/* ── CONFIG ── */
+async function loadConfig() {
+  try {
+    const rows = await sbGet('bettina_config', '?select=schluessel,wert');
+    const map = {};
+    rows.forEach(r => map[r.schluessel] = r.wert);
+    if (map.ton) document.getElementById('cfg-ton').value = map.ton;
+    if (map.sprache) document.getElementById('cfg-sprache').value = map.sprache;
+    if (map.max_antwortlaenge) document.getElementById('cfg-laenge').value = map.max_antwortlaenge;
+    if (map.signatur) document.getElementById('cfg-signatur').value = map.signatur;
+    if (map.geschaeftszeiten_tage) document.getElementById('cfg-tage').value = map.geschaeftszeiten_tage;
+    if (map.geschaeftszeiten_start) document.getElementById('cfg-start').value = map.geschaeftszeiten_start;
+    if (map.geschaeftszeiten_ende) document.getElementById('cfg-ende').value = map.geschaeftszeiten_ende;
+    if (map.ausserhalb_antwort) document.getElementById('cfg-ausserhalb').value = map.ausserhalb_antwort;
+  } catch(e) {}
+}
+
+async function saveVerhalten() {
+  try {
+    await Promise.all([
+      sbPatchKey('bettina_config','ton',{wert:document.getElementById('cfg-ton').value}),
+      sbPatchKey('bettina_config','sprache',{wert:document.getElementById('cfg-sprache').value}),
+      sbPatchKey('bettina_config','max_antwortlaenge',{wert:document.getElementById('cfg-laenge').value}),
+      sbPatchKey('bettina_config','signatur',{wert:document.getElementById('cfg-signatur').value}),
+    ]);
+    showToast('Verhalten gespeichert');
+  } catch(e) { showToast('Fehler: ' + e.message, true); }
+}
+
+async function saveZeiten() {
+  try {
+    await Promise.all([
+      sbPatchKey('bettina_config','geschaeftszeiten_tage',{wert:document.getElementById('cfg-tage').value}),
+      sbPatchKey('bettina_config','geschaeftszeiten_start',{wert:document.getElementById('cfg-start').value}),
+      sbPatchKey('bettina_config','geschaeftszeiten_ende',{wert:document.getElementById('cfg-ende').value}),
+      sbPatchKey('bettina_config','ausserhalb_antwort',{wert:document.getElementById('cfg-ausserhalb').value}),
+    ]);
+    showToast('Geschäftszeiten gespeichert');
+  } catch(e) { showToast('Fehler: ' + e.message, true); }
+}
+
+/* ── WISSENSBASIS ── */
+async function loadKb() {
+  try {
+    KB_DATA = await sbGet('knowledge_base', '?order=kategorie,titel');
+    renderKb();
+  } catch(e) { showToast('Fehler beim Laden der Wissensbasis', true); }
+}
+
+function filterKb(kat, btn) {
+  KB_FILTER = kat;
+  document.querySelectorAll('[id^="kf-"]').forEach(b => { b.style.borderColor=''; b.style.color=''; });
+  btn.style.borderColor = '#D85A30'; btn.style.color = '#D85A30';
+  renderKb();
+}
+
+function renderKb() {
+  const q = document.getElementById('kb-search').value.toLowerCase();
+  const items = KB_DATA.filter(r => {
+    const matchKat = KB_FILTER === 'alle' || r.kategorie === KB_FILTER;
+    const matchQ = !q || r.titel.toLowerCase().includes(q) || (r.inhalt||'').toLowerCase().includes(q);
+    return matchKat && matchQ && r.aktiv;
+  });
+  const list = document.getElementById('kb-list');
+  if (!items.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:13px;">Keine Einträge gefunden.</div>'; return; }
+  list.innerHTML = items.map(r => `<div class="kb-item">
+    <div style="flex-shrink:0;margin-top:2px;"><span class="badge badge-${r.kategorie||'sonstiges'}">${(r.kategorie||'?').charAt(0).toUpperCase()+(r.kategorie||'').slice(1)}</span></div>
+    <div class="kb-content">
+      <div class="kb-title">${r.titel}</div>
+      <div class="kb-preview">${(r.inhalt||'').substring(0,90)}…</div>
+    </div>
+    <div class="kb-actions">
+      <button class="btn btn-icon btn-sm" onclick="editKb('${r.id}')">✏️</button>
+      <button class="btn btn-icon btn-sm btn-danger" onclick="deleteKb('${r.id}')">🗑</button>
+    </div>
+  </div>`).join('');
+}
+
+function openKbForm() { document.getElementById('kb-form').classList.add('open'); document.getElementById('kb-edit-id').value = ''; document.getElementById('kb-titel').value = ''; document.getElementById('kb-inhalt').value = ''; }
+function closeKbForm() { document.getElementById('kb-form').classList.remove('open'); }
+
+function editKb(id) {
+  const r = KB_DATA.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('kb-form').classList.add('open');
+  document.getElementById('kb-edit-id').value = id;
+  document.getElementById('kb-kat').value = r.kategorie || 'faq';
+  document.getElementById('kb-titel').value = r.titel;
+  document.getElementById('kb-inhalt').value = r.inhalt;
+}
+
+async function saveKb() {
+  const titel = document.getElementById('kb-titel').value.trim();
+  const inhalt = document.getElementById('kb-inhalt').value.trim();
+  if (!titel || !inhalt) { showToast('Titel und Inhalt erforderlich', true); return; }
+  const data = { kategorie: document.getElementById('kb-kat').value, titel, inhalt, aktiv: true };
+  try {
+    const editId = document.getElementById('kb-edit-id').value;
+    if (editId) await sbPatch('knowledge_base', editId, data);
+    else await sbPost('knowledge_base', data);
+    closeKbForm();
+    await loadKb();
+    showToast('Wissenseintrag gespeichert');
+  } catch(e) { showToast('Fehler: ' + e.message, true); }
+}
+
+async function deleteKb(id) {
+  if (!confirm('Eintrag wirklich löschen?')) return;
+  try { await sbPatch('knowledge_base', id, {aktiv: false}); await loadKb(); showToast('Eintrag deaktiviert'); }
+  catch(e) { showToast('Fehler: ' + e.message, true); }
+}
+
+/* ── WEITERLEITUNGEN ── */
+let REGELN = [];
+
+async function loadRegeln() {
+  try {
+    const rows = await sbGet('bettina_config', '?schluessel=eq.weiterleitungsregeln&select=wert');
+    if (rows.length && rows[0].wert) REGELN = JSON.parse(rows[0].wert);
+    else REGELN = [
+      {stichwort:'Dach, Dachschaden', mitarbeiter:'Michael'},
+      {stichwort:'Fassade, Dämmung', mitarbeiter:'Michael'},
+      {stichwort:'Angebot, Kostenvoranschlag', mitarbeiter:'Thomas'},
+      {stichwort:'Reklamation, Beschwerde', mitarbeiter:'Thomas'},
+      {stichwort:'Rechnung, Termin, Verwaltung', mitarbeiter:'Sandra'},
+    ];
+  } catch(e) { REGELN = []; }
+  renderRegeln();
+}
+
+function renderRegeln() {
+  const list = document.getElementById('rules-list');
+  list.innerHTML = REGELN.map((r,i) => `<div class="rule-row">
+    <input type="text" value="${r.stichwort}" oninput="REGELN[${i}].stichwort=this.value" placeholder="Stichwörter">
+    <div class="rule-arrow">→</div>
+    <input type="text" value="${r.mitarbeiter}" oninput="REGELN[${i}].mitarbeiter=this.value" placeholder="Mitarbeiter">
+    <button class="btn btn-icon btn-sm btn-danger" onclick="deleteRule(${i})">🗑</button>
+  </div>`).join('');
+}
+
+function addRule() { REGELN.push({stichwort:'', mitarbeiter:''}); renderRegeln(); }
+function deleteRule(i) { REGELN.splice(i,1); renderRegeln(); }
+
+async function saveRegeln() {
+  try {
+    await sbPatchKey('bettina_config','weiterleitungsregeln',{wert: JSON.stringify(REGELN)});
+    showToast('Weiterleitungsregeln gespeichert');
+  } catch(e) { showToast('Fehler: ' + e.message, true); }
+}
+
+/* ── IMPORT ── */
+const AKOBA_KB = [
+  {kategorie:'faq',titel:'Wer ist AKOBA?',inhalt:'AKOBA – der Renovierer ist ein familiengeführter Handwerksbetrieb mit Sitz in Balingen-Weilstetten (Gehrnstr. 8, 72336 Balingen). Inhabergeführt von Reinhard Konzelmann e.K. (gelernter Schreinermeister), der den elterlichen Betrieb 1989 übernahm. Das Unternehmen ist seit über 60 Jahren in der Renovierungsbranche tätig und beschäftigt 5–9 Mitarbeiter.',aktiv:true},
+  {kategorie:'faq',titel:'Welche Leistungen bietet AKOBA an?',inhalt:'AKOBA bietet folgende Hauptleistungen an:\n1. Treppenrenovierung (Kernkompetenz seit über 30 Jahren)\n2. Fensterrenovierung / Fensterverkleidung (S3 Innova Aluminium-System)\n3. Neue Fenster (Finstral mit Überschubmontage)\n4. Haustüren (Aluminium, Marke Inotherm)\n5. Bad-Renovierung (SpaStyling, barrierefrei)\nDazu: Schreinerarbeiten, Bodenbeläge, Zimmertüren, Geländer-Montage',aktiv:true},
+  {kategorie:'faq',titel:'Wo ist AKOBA tätig / Einzugsgebiet?',inhalt:'AKOBA ist hauptsächlich tätig im:\n- Zollernalbkreis (Balingen, Albstadt, Hechingen, Burladingen, Meßstetten, Schömberg, Bisingen, Haigerloch, Rangendingen)\n- Kreis Tübingen (Tübingen, Mössingen, Rottenburg am Neckar, Bodelshausen)\n- Kreis Rottweil (Rottweil, Oberndorf, Dunningen)\n- Kreis Sigmaringen\n- Raum Stuttgart und Reutlingen\n- Bis zum Bodensee und Schwarzwald\n\nHauptsitz: Balingen-Weilstetten. Bad-Beratung: Albstadt-Ebingen (Untere Vorstadt 30).',aktiv:true},
+  {kategorie:'faq',titel:'Wie kann man AKOBA kontaktieren?',inhalt:'Telefon: 07433 / 99 35 16\nE-Mail: info@akoba.de\nE-Mail Bad: bad@akoba.de\nWhatsApp: https://wa.me/message/IDZHVA6JZ4J3C1\nInstagram: @akobaderrenovierer\nFacebook: /AKOBAderRenovierer\nAdresse: Gehrnstr. 8, 72336 Balingen-Weilstetten\nBad-Beratung: Untere Vorstadt 30, 72461 Albstadt-Ebingen\nWebsite: www.akoba.de',aktiv:true},
+  {kategorie:'faq',titel:'Wie läuft der Prozess ab – von Anfrage bis Montage?',inhalt:'1. Anfrage per WhatsApp oder E-Mail, gern mit Fotos und Maßen\n2. Vorab-Angebot: erstes Richtangebot – transparent und unverbindlich\n3. Details klären: Materialien, Termine – telefonisch oder persönlich\n4. Vor-Ort-Termin / Aufmaß: finale Fragen, dann startet Produktion',aktiv:true},
+  {kategorie:'faq',titel:'Was zeichnet AKOBA aus?',inhalt:'- Familiengeführt, persönlicher Kontakt direkt mit den Handwerkern\n- Seit über 60 Jahren erfahren\n- Eigenes bewährtes Treppenrenovierungssystem (über 30 Jahre)\n- Schnelle Ausführung: Treppenrenovierung in 1–2 Tagen ohne Abriss\n- Saubere Montage ohne Großbaustelle\n- Hochwertige Materialien und Markenpartner\n- Kundenbewertungen durchweg sehr positiv (49 Bewertungen, 4 Portale)',aktiv:true},
+  {kategorie:'faq',titel:'Gibt es einen Online-Konfigurator?',inhalt:'Ja, für Haustüren: https://doordesigner.inotherm-tuer.de/configurator/?partnerCode=20876\nKunden können Fassadenbild hochladen, Farbe, Form und Zubehör wählen.\nAngebotsanfrage allgemein: https://akoba.de/kontakt/',aktiv:true},
+  {kategorie:'produkte',titel:'Treppenrenovierung – Überblick',inhalt:'Kernkompetenz von AKOBA seit über 30 Jahren. Das AKOBA-Treppensystem verkleidet die bestehende Treppe ohne Abriss in 1–2 Tagen. Funktioniert auf Holz-, Beton- und Steintreppen.\n\nMaterialien: Laminat, Echtholz (Parkett) oder Vinyl\nSystemkomponenten: Alu-Profil-Verkleidung für Tritt und Kante\nZusätzlich: neue Treppen, offene Treppen, Betontreppen, Geländer-Montage',aktiv:true},
+  {kategorie:'produkte',titel:'Treppenrenovierung – AKOBA UNI-System',inhalt:'Modernes, gradliniges System mit eloxiertem Alu-Profil. Stufe und Kante aus einem Stück. Geeignet für alle Treppenkonstruktionen. Viele Laminat-, Echtholz- und Vinyl-Dekore.',aktiv:true},
+  {kategorie:'produkte',titel:'Treppenrenovierung – AKOBA ELEGANZ-System',inhalt:'Optimale Lösung für ruhigere Wohnbereiche. Post-Forming-Kante für natürliche Treppenoptik. Trittfläche und Blende aus einem Stück. Material: hochabriebsfestes Gewerbelaminat, auch in Echtholz oder Vinyl (4 Dekore).',aktiv:true},
+  {kategorie:'faq',titel:'Wie lange dauert eine Treppenrenovierung?',inhalt:'In der Regel 1–2 Tage. AKOBA überbaut die vorhandene Treppe ohne Abriss – kleine, saubere Baustelle. Kunden berichten von sehr ordentlicher und leiser Montage.',aktiv:true},
+  {kategorie:'faq',titel:'Für welche Treppen eignet sich die Renovierung?',inhalt:'Das AKOBA-System funktioniert auf: Holztreppen, Betontreppen, Steintreppen, offene Treppen, für jedes Treppenmodell. Auch Treppengeländer werden erneuert.',aktiv:true},
+  {kategorie:'produkte',titel:'Fensterrenovierung – S3 Innova Aluminium-Verkleidung',inhalt:'AKOBA ist zertifizierter S3 Innova Partnerbetrieb. Das System verkleidet Fenster dauerhaft mit Aluminiumprofilen von außen – ohne Komplettaustausch.\n\nVorteile:\n- Nie wieder Fenster streichen\n- 100% wartungsfreie Außenseite\n- Lebenslanger Schutz vor UV, Regen, Witterung\n- Wärmeverlust und Lärm reduziert\n- Gesamtdicke nur 5 mm\n- Über 20 Jahre Reklamationsfreiheit\n- Viele Farben und Holzdekore\n\nGeeignet für: Holzfenster (ideal), Kunststofffenster, Wintergarten, Balkontüren',aktiv:true},
+  {kategorie:'produkte',titel:'Neue Fenster – Finstral mit Überschubmontage',inhalt:'Für kompletten Fenstertausch bietet AKOBA Finstral-Fenster mit schonender Überschubmontage – kein großer Eingriff ins Mauerwerk nötig. Seit über 15 Jahren im Bereich Fenstersanierung tätig.',aktiv:true},
+  {kategorie:'faq',titel:'Wann lohnt sich Fensterrenovierung vs. Fenstertausch?',inhalt:'S3 Innova Renovierung: wenn Fenstersubstanz gut ist, aber Außenseite verwittert oder streichbedürftig – günstigere, nachhaltigere Lösung.\n\nKompletter Austausch (Finstral): wenn Dichtungen, Beschläge oder Rahmenkonstruktion grundlegend erneuert werden müssen.',aktiv:true},
+  {kategorie:'produkte',titel:'Haustüren – Inotherm Aluminium',inhalt:'AKOBA montiert Aluminium-Haustüren der Marke Inotherm. Über 400 Modelle.\n\nVorteile:\n- Einbruchhemmend (bis RC3)\n- Wärme- und schalldämmend\n- Witterungsbeständig und langlebig\n- Individuell konfigurierbar\n- Optional mit INOSMART-Fingerprint\n\nKonfigurator: https://doordesigner.inotherm-tuer.de/configurator/?partnerCode=20876',aktiv:true},
+  {kategorie:'produkte',titel:'Bad-Renovierung – Überblick',inhalt:'3 Optionen:\n1. Dusche statt Wanne – barrierefreier Umbau, KK-Zuschuss möglich\n2. Austausch Armaturen & Sanitär\n3. Individuelles Traumbad – vollständige Planung\n\nSpezialleistungen:\n- Barrierefreie Bäder (Krankenkasse fördert oft)\n- Fugenloses Bad\n- Platzoptimierung\n\nBeratungszentrum: Untere Vorstadt 30, 72461 Albstadt-Ebingen\nTel: 07433/993516, bad@akoba.de',aktiv:true},
+  {kategorie:'faq',titel:'Wird Badrenovierung von der Krankenkasse gefördert?',inhalt:'Ja – bei barrierefreiem Umbau (bodengleiche Dusche, Haltegriffe, Sicherheitsausstattung) ist in vielen Fällen ein Krankenkassen-Zuschuss möglich. AKOBA berät dazu im persönlichen Gespräch.',aktiv:true},
+  {kategorie:'faq',titel:'Was ist ein fugenloses Bad?',inhalt:'Bad ohne sichtbare Fliesenfugen. Vorteile: moderne zeitlose Optik, hygienischer (keine Schmutzfallen), pflegeleichter, langlebig. AKOBA bietet fugenlose Bäder in hochwertiger Ausführung.',aktiv:true},
+  {kategorie:'preise',titel:'Wie funktioniert die Preisanfrage?',inhalt:'Angebote werden individuell erstellt. So geht es:\n1. Fotos + Maße per WhatsApp oder E-Mail senden\n2. AKOBA erstellt erstes Richtangebot (unverbindlich)\n3. Bei Interesse: Details, Materialwahl, Vor-Ort-Termin\n\nKontakt: WhatsApp 07433 993516 oder info@akoba.de',aktiv:true},
+  {kategorie:'preise',titel:'Kostenrahmen Treppenrenovierung',inhalt:'Genaue Preise abhängig von Stufenanzahl, Material und System. Das AKOBA-System ist als wirtschaftliche Alternative zu Neubau konzipiert. Kundenbewertungen loben das Preis-Leistungs-Verhältnis. Für Angebot: Fotos und Maße einsenden.',aktiv:true},
+  {kategorie:'preise',titel:'Kostenrahmen Fensterrenovierung S3 Innova',inhalt:'S3 Innova ist explizit als kostengünstigere Alternative zum Komplett-Fenstertausch positioniert – kein Austausch, kein Mauerwerkseingriff. Für konkreten Preis: Anzahl Fenster, Größen und Fotos einsenden.',aktiv:true},
+  {kategorie:'partner',titel:'Partner: Inotherm (Haustüren)',inhalt:'Hersteller hochwertiger Aluminium-Haustüren. AKOBA ist autorisierter Montage-Partner. Über 400 Modelle, bis RC3, INOSMART-Fingerprint-Option.\nKonfigurator: https://doordesigner.inotherm-tuer.de/configurator/?partnerCode=20876',aktiv:true},
+  {kategorie:'partner',titel:'Partner: Stoll Fenstertechnik / S3 Innova',inhalt:'Hersteller des S3 Innova Fenster-Verkleidungssystems. AKOBA ist zertifizierter Partnerbetrieb. Über 20 Jahre Reklamationsfreiheit, Prüfzertifikat. Netzwerk: 30+ Betriebe in D, Österreich, Schweiz.',aktiv:true},
+  {kategorie:'partner',titel:'Partner: Finstral (neue Fenster)',inhalt:'Hochwertiger Fensterhersteller. AKOBA bietet Finstral-Fenster mit schonender Überschubmontage an.',aktiv:true},
+  {kategorie:'partner',titel:'Partner: SpaStyling / Resopal (Bad)',inhalt:'Für Badrenovierungen arbeitet AKOBA mit SpaStyling (Resopal) zusammen. System für fugenlose Bäder und moderne Wandpaneele. Partner der Firma Stoll Weingarten.',aktiv:true},
+  {kategorie:'prozesse',titel:'Ablauf Treppenrenovierung konkret',inhalt:'1. Anfrage per WhatsApp/E-Mail mit Fotos und Treppenmaßen\n2. Richtangebot (meist ohne Vor-Ort-Termin)\n3. Materialauswahl – Muster im Showroom Weilstetten anschaubar\n4. Termin vereinbaren\n5. Montage: 1–2 Tage, sauber, ohne Abriss\n6. Übergabe',aktiv:true},
+  {kategorie:'prozesse',titel:'Ablauf Fensterrenovierung S3 Innova',inhalt:'1. Anfrage mit Fotos und Maßen\n2. Angebot\n3. Farbwahl / Dekor\n4. Montage: Alu-Profile auf Außenseite bestehender Fenster – kein Austausch nötig, nur 5mm Aufbau\n5. Übergabe',aktiv:true},
+  {kategorie:'prozesse',titel:'Schreinerarbeiten und weitere Leistungen',inhalt:'AKOBA ist Schreinerei und bietet:\n- Möbel nach Maß\n- Zimmertüren\n- Bodenbeläge (CeraTouch, theNaturals, Essentials, COREtec Stone)\n- Geländer-Montage\n- Raumgestaltung\n\nReferenz: komplette Bürorenovierung inkl. Wände, Decken, Böden, Türen, Küche, Treppe, Wanddurchbruch.',aktiv:true},
+  {kategorie:'faq',titel:'Showroom / Materialbesichtigung',inhalt:'Materialien (Treppendekore, Böden etc.) können vor Ort besichtigt werden:\nGehrnstr. 8, 72336 Balingen-Weilstetten\nTermin empfehlenswert – vorab per Telefon oder WhatsApp anfragen.',aktiv:true},
+  {kategorie:'faq',titel:'Servicezentrum Bad – Albstadt-Ebingen',inhalt:'Beratungszentrum Bad:\nUntere Vorstadt 30, 72461 Albstadt-Ebingen\nTel: 07433 / 99 35 16\nE-Mail: bad@akoba.de\nBeratungstermine nach Vereinbarung.',aktiv:true},
+];
+
+async function importKbAkoba() {
+  const btn = document.getElementById('import-kb-btn');
+  const prog = document.getElementById('import-kb-progress');
+  const bar = document.getElementById('import-kb-bar');
+  const status = document.getElementById('import-kb-status');
+  btn.disabled = true;
+  prog.style.display = 'block';
+  let done = 0, skipped = 0, errors = 0;
+  for (const item of AKOBA_KB) {
+    try {
+      const res = await fetch(`${SB_URL}/rest/v1/knowledge_base`, {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify(item)
+      });
+      if (res.status === 409) skipped++;
+      else if (!res.ok) errors++;
+    } catch(e) { errors++; }
+    done++;
+    bar.style.width = Math.round((done / AKOBA_KB.length) * 100) + '%';
+    status.textContent = `${done}/${AKOBA_KB.length} verarbeitet…`;
+    await new Promise(r => setTimeout(r, 30));
+  }
+  status.textContent = `Fertig: ${done - errors - skipped} neu importiert, ${skipped} bereits vorhanden, ${errors} Fehler`;
+  btn.disabled = false;
+  showToast(errors > 0 ? `${errors} Fehler` : `${done - skipped} Einträge importiert!`, errors > 0);
+  await loadKb();
+}
+
+async function importCustom() {
+  const raw = document.getElementById('import-json').value.trim();
+  const table = document.getElementById('import-table').value;
+  const prog = document.getElementById('import-custom-progress');
+  const bar = document.getElementById('import-custom-bar');
+  const status = document.getElementById('import-custom-status');
+  let data;
+  try { data = JSON.parse(raw); } catch(e) { showToast('Ungültiges JSON: ' + e.message, true); return; }
+  if (!Array.isArray(data)) { showToast('Muss ein JSON-Array sein: [...]', true); return; }
+  prog.style.display = 'block';
+  let done = 0, errors = 0;
+  for (const item of data) {
+    try {
+      const res = await fetch(`${SB_URL}/rest/v1/${table}`, {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify(item)
+      });
+      if (!res.ok && res.status !== 409) errors++;
+    } catch(e) { errors++; }
+    done++;
+    bar.style.width = Math.round((done / data.length) * 100) + '%';
+    status.textContent = `${done}/${data.length} verarbeitet…`;
+    await new Promise(r => setTimeout(r, 30));
+  }
+  status.textContent = `Fertig: ${done - errors} importiert, ${errors} Fehler`;
+  showToast(errors > 0 ? `${errors} Fehler` : `${done} Einträge importiert!`, errors > 0);
+  if (table === 'knowledge_base') await loadKb();
+  if (table === 'employees') await loadEmployees();
+}
+
+document.getElementById('import-json') && document.getElementById('import-json').addEventListener('input', function() {
+  try {
+    const d = JSON.parse(this.value);
+    document.getElementById('import-json-count').textContent = Array.isArray(d) ? d.length + ' Einträge erkannt' : 'Kein Array';
+  } catch(e) { document.getElementById('import-json-count').textContent = 'Ungültiges JSON'; }
+});
+
+/* ── AUTO LOGIN ── */
+window.onload = () => {
+  const url = localStorage.getItem('sb_url');
+  const key = localStorage.getItem('sb_key');
+  if (url && key) {
+    document.getElementById('login-url').value = url;
+    document.getElementById('login-key').value = key;
+    document.getElementById('cnt-url').textContent = url.length + ' Zeichen';
+    document.getElementById('cnt-key').textContent = key.length + ' Zeichen';
+  }
+};
+</script>
+</body>
+</html>
