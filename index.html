@@ -1692,7 +1692,7 @@ async function testConnections() {
   if (url) localStorage.setItem('bettina_supabase_url', url);
   if (key) localStorage.setItem('bettina_supabase_key', key);
   toast('Teste Verbindungen…');
-  const res = await supabase('bettina_config?select=id&limit=1');
+  const res = await supabase('bettina_config?select=key&limit=1');
   if (res) toast('Supabase verbunden ✓', 'success');
 }
 
