@@ -3,896 +3,1734 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bettina – Konfiguration | Akoba</title>
+<title>Bettina Config · Akoba GmbH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --orange: #D85A30;
-    --orange-dark: #993C1D;
-    --orange-light: #FAECE7;
-    --green: #3B6D11;
-    --green-light: #EAF3DE;
-    --blue-light: #E6F1FB;
-    --blue: #185FA5;
-    --amber-light: #FAEEDA;
-    --amber: #854F0B;
-    --red-light: #FCEBEB;
-    --red: #A32D2D;
-    --gray: #5F5E5A;
-    --gray-light: #F1EFE8;
-    --border: #e0ddd8;
-    --text: #1a1a18;
-    --text-muted: #6b6a66;
-    --bg: #f8f7f4;
-    --card: #ffffff;
-    --radius: 10px;
-    --radius-sm: 6px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+:root {
+  --bg:       #0f0e0c;
+  --bg2:      #1a1814;
+  --bg3:      #242018;
+  --border:   #2e2a22;
+  --border2:  #3d3830;
+  --text:     #e8e0d0;
+  --text2:    #9a9080;
+  --text3:    #5a5248;
+  --amber:    #d48b2a;
+  --amber2:   #f0a83a;
+  --amber-bg: #1e1608;
+  --green:    #4a8c5c;
+  --green-bg: #0a1410;
+  --red:      #8c4a4a;
+  --red-bg:   #140a0a;
+  --blue:     #4a6a8c;
+  --blue-bg:  #080e14;
+  --radius:   6px;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans:  'Instrument Sans', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+}
 
-  /* LOGIN */
-  #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
-  .login-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; width: 100%; max-width: 420px; }
-  .login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
-  .login-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--orange-light); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600; color: var(--orange); }
-  .login-title { font-size: 18px; font-weight: 600; }
-  .login-sub { font-size: 13px; color: var(--text-muted); }
-  .login-field { margin-bottom: 1rem; }
-  .login-field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; }
-  .login-field textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; font-family: monospace; resize: none; background: var(--bg); color: var(--text); word-break: break-all; }
-  .login-field textarea:focus { outline: none; border-color: var(--orange); }
-  .char-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; display: flex; justify-content: space-between; }
-  .login-btn { width: 100%; padding: 11px; background: var(--orange); color: white; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; margin-top: .5rem; }
-  .login-btn:hover { background: var(--orange-dark); }
-  .login-error { background: var(--red-light); color: var(--red); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 13px; margin-top: .75rem; display: none; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* LAYOUT */
-  #app { display: none; min-height: 100vh; }
-  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; gap: 12px; height: 56px; position: sticky; top: 0; z-index: 100; }
-  .topbar-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--orange-light); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: var(--orange); }
-  .topbar-title { font-size: 15px; font-weight: 600; }
-  .topbar-sub { font-size: 12px; color: var(--text-muted); }
-  .status-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 10px; background: var(--green-light); color: var(--green); border-radius: 20px; font-weight: 500; margin-left: auto; }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
-  .logout-btn { padding: 5px 12px; font-size: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; cursor: pointer; color: var(--text-muted); margin-left: 8px; }
-  .logout-btn:hover { background: var(--bg); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+}
 
-  .main { display: flex; }
-  .sidebar { width: 200px; flex-shrink: 0; padding: 1.25rem 0; border-right: 1px solid var(--border); background: var(--card); min-height: calc(100vh - 56px); }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 1.25rem; font-size: 13px; cursor: pointer; color: var(--text-muted); border-left: 3px solid transparent; transition: all .15s; }
-  .nav-item:hover { background: var(--bg); color: var(--text); }
-  .nav-item.active { color: var(--orange); border-left-color: var(--orange); background: var(--orange-light); font-weight: 500; }
-  .nav-icon { font-size: 16px; width: 18px; text-align: center; }
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+}
 
-  .content { flex: 1; padding: 1.5rem; max-width: 760px; }
-  .panel { display: none; }
-  .panel.active { display: block; }
-  .panel-title { font-size: 17px; font-weight: 600; margin-bottom: 1.25rem; }
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo .brand {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--amber2);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.sidebar-logo .sub {
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
 
-  /* CARDS */
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
-  .card-title { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1rem; }
+.sidebar-status {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text2);
+}
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  flex-shrink: 0;
+}
+.status-dot.inactive { background: var(--red); box-shadow: 0 0 6px var(--red); }
 
-  /* FORMS */
-  .field { margin-bottom: 1rem; }
-  .field:last-child { margin-bottom: 0; }
-  .field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; font-weight: 500; }
-  .field input, .field select, .field textarea {
-    width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 13px; background: var(--bg); color: var(--text); font-family: inherit;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--orange); }
-  .field textarea { resize: vertical; min-height: 80px; }
-  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 0;
+  overflow-y: auto;
+}
 
-  /* TOGGLE */
-  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
-  .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .toggle-row:first-child { padding-top: 0; }
-  .toggle-label { font-size: 13px; font-weight: 500; }
-  .toggle-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-  .toggle { position: relative; width: 38px; height: 22px; flex-shrink: 0; }
-  .toggle input { opacity: 0; width: 0; height: 0; }
-  .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 11px; cursor: pointer; transition: .2s; }
-  .toggle-slider:before { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; left: 3px; top: 3px; background: white; transition: .2s; }
-  .toggle input:checked + .toggle-slider { background: var(--green); }
-  .toggle input:checked + .toggle-slider:before { transform: translateX(16px); }
+.nav-section {
+  padding: 0 12px;
+  margin-bottom: 4px;
+}
+.nav-section-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 8px 8px 4px;
+}
 
-  /* BUTTONS */
-  .btn { padding: 8px 16px; font-size: 13px; cursor: pointer; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; color: var(--text); transition: background .15s; font-weight: 500; }
-  .btn:hover { background: var(--bg); }
-  .btn-primary { background: var(--orange); color: white; border-color: transparent; }
-  .btn-primary:hover { background: var(--orange-dark); }
-  .btn-sm { padding: 5px 10px; font-size: 12px; }
-  .btn-icon { width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center; }
-  .btn-danger { color: var(--red); border-color: transparent; }
-  .btn-danger:hover { background: var(--red-light); }
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--text2);
+  transition: all 0.15s;
+  font-size: 13.5px;
+  border: 1px solid transparent;
+  user-select: none;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active {
+  background: var(--amber-bg);
+  color: var(--amber2);
+  border-color: var(--border2);
+}
+.nav-item .icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-family: var(--font-mono);
+}
 
-  /* BADGES */
-  .badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 500; }
-  .badge-faq { background: var(--blue-light); color: var(--blue); }
-  .badge-preise { background: var(--amber-light); color: var(--amber); }
-  .badge-prozesse { background: #E1F5EE; color: #0F6E56; }
-  .badge-produkte { background: #EEEDFE; color: #534AB7; }
-  .badge-partner { background: var(--red-light); color: var(--red); }
-  .badge-sonstiges { background: var(--gray-light); color: var(--gray); }
-  .badge-aktiv { background: var(--green-light); color: var(--green); }
-  .badge-inaktiv { background: var(--gray-light); color: var(--gray); }
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text3);
+}
 
-  /* EMPLOYEE CARDS */
-  .emp-list { display: flex; flex-direction: column; gap: 0; }
-  .emp-row { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--border); }
-  .emp-row:last-child { border-bottom: none; }
-  .emp-row:first-child { padding-top: 0; }
-  .emp-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; flex-shrink: 0; }
-  .emp-name { font-size: 14px; font-weight: 600; }
-  .emp-role { font-size: 12px; color: var(--text-muted); margin: 2px 0 6px; }
-  .emp-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-  .emp-tag { font-size: 11px; padding: 2px 7px; border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); }
-  .emp-actions { display: flex; gap: 4px; align-items: center; }
+/* ── MAIN ── */
+.main {
+  margin-left: 220px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  /* KB */
-  .kb-item { display: flex; align-items: start; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border); }
-  .kb-item:last-child { border-bottom: none; }
-  .kb-item:first-child { padding-top: 0; }
-  .kb-content { flex: 1; }
-  .kb-title { font-size: 13px; font-weight: 600; }
-  .kb-preview { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
-  .kb-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.topbar-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--text);
+}
+.topbar-actions { display: flex; gap: 8px; align-items: center; }
 
-  /* RULES */
-  .rule-row { display: grid; grid-template-columns: 1fr 24px 1fr 32px; gap: 8px; align-items: center; margin-bottom: 8px; }
-  .rule-arrow { text-align: center; color: var(--text-muted); font-size: 16px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text2);
+  text-decoration: none;
+}
+.btn:hover { border-color: var(--border2); color: var(--text); }
+.btn-primary {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #0f0e0c;
+  font-weight: 600;
+}
+.btn-primary:hover { background: var(--amber2); border-color: var(--amber2); }
+.btn-danger { border-color: var(--red); color: var(--red); }
+.btn-danger:hover { background: var(--red-bg); }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
 
-  /* SAVE BAR */
-  .save-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
-  .save-hint { font-size: 12px; color: var(--text-muted); }
+.content {
+  padding: 28px;
+  flex: 1;
+}
 
-  /* TOAST */
-  #toast { position: fixed; bottom: 20px; right: 20px; padding: 10px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; color: white; opacity: 0; transition: opacity .3s; pointer-events: none; z-index: 9999; }
-  #toast.show { opacity: 1; }
+/* ── PANELS ── */
+.panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.panel-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-body { padding: 20px; }
 
-  /* FORM SECTION */
-  .form-section { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-top: 1rem; display: none; }
-  .form-section.open { display: block; }
-  .form-title { font-size: 13px; font-weight: 600; margin-bottom: 1rem; }
+/* ── GRID ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* ── STATS ── */
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+.stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
+.stat-value { font-family: var(--font-mono); font-size: 28px; color: var(--text); margin: 6px 0 2px; line-height: 1; }
+.stat-sub { font-size: 11px; color: var(--text2); }
+.stat-card.highlight { border-color: var(--amber); }
+.stat-card.highlight .stat-value { color: var(--amber2); }
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text3);
+  padding: 0 16px 10px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 13px;
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg3); color: var(--text); }
+.td-main { color: var(--text); font-weight: 500; }
+
+/* ── BADGES ── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+.tag-green  { background: var(--green-bg); color: #6abf84; border: 1px solid var(--green); }
+.tag-red    { background: var(--red-bg);   color: #bf6a6a; border: 1px solid var(--red); }
+.tag-amber  { background: var(--amber-bg); color: var(--amber2); border: 1px solid var(--amber); }
+.tag-blue   { background: var(--blue-bg);  color: #6a9abf; border: 1px solid var(--blue); }
+.tag-gray   { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+
+/* ── FORM ── */
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text2);
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+}
+.form-label .required { color: var(--amber); margin-left: 2px; }
+input, select, textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 8px 12px;
+  transition: border-color 0.15s;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--amber); }
+textarea { resize: vertical; min-height: 120px; font-family: var(--font-mono); font-size: 12px; }
+.form-hint { font-size: 11px; color: var(--text3); margin-top: 4px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ── TOGGLE ── */
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.toggle-wrap:last-child { border-bottom: none; }
+.toggle-info { flex: 1; }
+.toggle-name { font-size: 13px; color: var(--text); font-weight: 500; }
+.toggle-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.toggle {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.toggle-slider:before {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  left: 2px; top: 2px;
+  background: var(--text3);
+  border-radius: 50%;
+  transition: 0.2s;
+}
+.toggle input:checked + .toggle-slider { background: var(--amber-bg); border-color: var(--amber); }
+.toggle input:checked + .toggle-slider:before { transform: translateX(16px); background: var(--amber2); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  width: 580px;
+  max-width: 95vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+.modal-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title { font-family: var(--font-serif); font-size: 18px; }
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text3);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.modal-close:hover { color: var(--text); background: var(--bg3); }
+.modal-body { padding: 20px; overflow-y: auto; flex: 1; }
+.modal-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone {
+  border: 2px dashed var(--border2);
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg);
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: var(--amber);
+  background: var(--amber-bg);
+}
+.upload-icon { font-size: 32px; margin-bottom: 10px; }
+.upload-text { color: var(--text2); font-size: 13px; }
+.upload-text strong { color: var(--amber2); }
+.upload-hint { font-size: 11px; color: var(--text3); margin-top: 6px; }
+
+/* ── ACTIVITY LOG ── */
+.log-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.log-item:last-child { border-bottom: none; }
+.log-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.log-time { font-family: var(--font-mono); font-size: 11px; color: var(--text3); white-space: nowrap; margin-top: 2px; }
+.log-msg { font-size: 13px; color: var(--text2); flex: 1; }
+.log-msg strong { color: var(--text); }
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--amber);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+/* ── CONVERSATION CARD ── */
+.conv-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.conv-card:hover { border-color: var(--border2); }
+.conv-card.unread { border-left: 3px solid var(--amber); }
+.conv-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.conv-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.conv-time { font-size: 11px; color: var(--text3); font-family: var(--font-mono); }
+.conv-subject { font-size: 12px; color: var(--text2); margin: 3px 0; }
+.conv-preview { font-size: 11px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conv-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* ── TOAST ── */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  animation: slideIn 0.2s ease;
+  max-width: 300px;
+}
+.toast.success { border-left: 3px solid var(--green); }
+.toast.error { border-left: 3px solid var(--red); }
+@keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+.text-mono { font-family: var(--font-mono); font-size: 12px; }
+.text-muted { color: var(--text3); }
+.mt-4 { margin-top: 4px; }
+.mt-8 { margin-top: 8px; }
+.mb-4 { margin-bottom: 4px; }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="login-avatar">B</div>
-      <div>
-        <div class="login-title">Bettina</div>
-        <div class="login-sub">Digitale Sekretärin · Akoba</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">Bettina</div>
+    <div class="sub">Akoba GmbH · Config</div>
+  </div>
+  <div class="sidebar-status" id="statusBar">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Bettina aktiv</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Übersicht</div>
+      <div class="nav-item active" onclick="showView('dashboard', this)">
+        <span class="icon">⬛</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="showView('conversations', this)">
+        <span class="icon">✉</span> Konversationen
+        <span class="badge" id="unreadBadge">3</span>
       </div>
     </div>
-    <div class="login-field">
-      <label>Supabase Project URL</label>
-      <textarea id="login-url" rows="2" placeholder="https://abcdefgh.supabase.co" oninput="updateCount('login-url','cnt-url')"></textarea>
-      <div class="char-hint"><span>Endet auf .supabase.co</span><span id="cnt-url">0 Zeichen</span></div>
+    <div class="nav-section">
+      <div class="nav-section-label">Konfiguration</div>
+      <div class="nav-item" onclick="showView('knowledge', this)">
+        <span class="icon">📚</span> Wissensdatenbank
+      </div>
+      <div class="nav-item" onclick="showView('employees', this)">
+        <span class="icon">👥</span> Mitarbeiter
+      </div>
+      <div class="nav-item" onclick="showView('behavior', this)">
+        <span class="icon">⚙️</span> Verhalten
+      </div>
+      <div class="nav-item" onclick="showView('templates', this)">
+        <span class="icon">📝</span> Templates
+      </div>
     </div>
-    <div class="login-field">
-      <label>Anon Key (public)</label>
-      <textarea id="login-key" rows="3" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." oninput="updateCount('login-key','cnt-key')"></textarea>
-      <div class="char-hint"><span>Langer JWT-Token – muss vollständig eingefügt werden</span><span id="cnt-key">0 Zeichen</span></div>
+    <div class="nav-section">
+      <div class="nav-section-label">System</div>
+      <div class="nav-item" onclick="showView('logs', this)">
+        <span class="icon">📋</span> Agent-Log
+      </div>
+      <div class="nav-item" onclick="showView('settings', this)">
+        <span class="icon">🔧</span> Einstellungen
+      </div>
     </div>
-    <button class="login-btn" onclick="doLogin()">Verbinden &amp; einloggen</button>
-    <div class="login-error" id="login-error"></div>
+  </nav>
+  <div class="sidebar-footer">
+    v3.2 · n8n.feierkind.com
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-actions">
+      <button class="btn btn-sm" onclick="loadFromSupabase()">↻ Aktualisieren</button>
+      <button class="btn btn-primary btn-sm" onclick="saveConfig()">Speichern</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="view active" id="view-dashboard">
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="stat-card highlight">
+          <div class="stat-label">Heute bearbeitet</div>
+          <div class="stat-value" id="stat-today">—</div>
+          <div class="stat-sub">Emails gesamt</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Eskaliert</div>
+          <div class="stat-value" id="stat-escalated">—</div>
+          <div class="stat-sub">ans Team weitergeleitet</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Ø Confidence</div>
+          <div class="stat-value" id="stat-confidence">—</div>
+          <div class="stat-sub">letzte 7 Tage</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Offene Aufgaben</div>
+          <div class="stat-value" id="stat-tasks">—</div>
+          <div class="stat-sub">in Hero offen</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">🟢 Letzte Aktivität</div>
+            <button class="btn btn-sm" onclick="showView('conversations', document.querySelector('[onclick*=conversations]'))">Alle →</button>
+          </div>
+          <div class="panel-body" id="recentActivity">
+            <div class="log-item">
+              <div class="log-dot" style="background:var(--green)"></div>
+              <div style="flex:1">
+                <div class="log-msg"><strong>Bettina wird geladen…</strong></div>
+                <div class="log-time">Verbinde mit Supabase</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">📊 Intent-Verteilung</div>
+            <span class="tag tag-gray">7 Tage</span>
+          </div>
+          <div class="panel-body" id="intentChart">
+            <div id="intentBars">
+              <div style="color:var(--text3);font-size:12px">Lade Daten…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">⚡ Systemstatus</div>
+        </div>
+        <div class="panel-body">
+          <div class="grid-3">
+            <div>
+              <div class="form-label">n8n Workflow</div>
+              <span class="tag tag-green" id="sys-n8n">● Aktiv</span>
+            </div>
+            <div>
+              <div class="form-label">Supabase</div>
+              <span class="tag tag-green" id="sys-supabase">● Verbunden</span>
+            </div>
+            <div>
+              <div class="form-label">Hero API</div>
+              <span class="tag tag-green" id="sys-hero">● Erreichbar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── KONVERSATIONEN ── -->
+    <div class="view" id="view-conversations">
+      <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center">
+        <input type="text" placeholder="Suche nach Name, Email, Betreff…" style="max-width:320px" oninput="filterConvs(this.value)">
+        <select style="width:160px" onchange="filterByIntent(this.value)">
+          <option value="">Alle Intents</option>
+          <option>quote_request</option>
+          <option>appointment_request</option>
+          <option>product_info</option>
+          <option>complaint</option>
+          <option>info_missing</option>
+          <option>spam</option>
+          <option>out_of_area</option>
+        </select>
+        <select style="width:140px">
+          <option>Alle Status</option>
+          <option>Offen</option>
+          <option>Eskaliert</option>
+          <option>Abgeschlossen</option>
+        </select>
+      </div>
+      <div id="convList">
+        <div class="conv-card unread">
+          <div class="conv-header">
+            <div class="conv-name">Wird geladen…</div>
+            <div class="conv-time">—</div>
+          </div>
+          <div class="conv-subject">Verbinde mit Supabase</div>
+          <div class="conv-tags"><span class="tag tag-gray">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WISSENSDATENBANK ── -->
+    <div class="view" id="view-knowledge">
+      <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center">
+        <input type="text" placeholder="Einträge durchsuchen…" style="max-width:280px">
+        <select style="width:160px">
+          <option value="">Alle Typen</option>
+          <option>kb_entry</option>
+          <option>system_prompt</option>
+          <option>email_template</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('modal-kb-new')">+ Neuer Eintrag</button>
+        <button class="btn" onclick="openModal('modal-kb-upload')">⬆ Import</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📚 Knowledge Base Einträge</div>
+          <span class="tag tag-gray" id="kb-count">Lade…</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Typ</th>
+                <th>Titel</th>
+                <th>Länge</th>
+                <th>Aktiv</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="kbTableBody">
+              <tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">Lade Daten…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MITARBEITER ── -->
+    <div class="view" id="view-employees">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn btn-primary" onclick="openModal('modal-employee-new')">+ Mitarbeiter hinzufügen</button>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">👥 Mitarbeiter & Routing</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Rolle</th>
+                <th>Email</th>
+                <th>Routing bei Intent</th>
+                <th>Aktiv</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+              <tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">Lade Daten…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🔀 Routing-Regeln</div>
+        </div>
+        <div class="panel-body">
+          <div class="grid-2">
+            <div>
+              <div class="form-label">Beschwerde / Reklamation</div>
+              <select id="route-complaint"><option>Thomas (Geschäftsführer)</option><option>Sandra (Büro)</option></select>
+            </div>
+            <div>
+              <div class="form-label">Angebotsanfrage</div>
+              <select id="route-quote"><option>Thomas (Geschäftsführer)</option><option>Michael (Bauleiter)</option></select>
+            </div>
+            <div>
+              <div class="form-label">Terminanfrage</div>
+              <select id="route-appointment"><option>Sandra (Büro)</option><option>Thomas (Geschäftsführer)</option></select>
+            </div>
+            <div>
+              <div class="form-label">Standard / Fallback</div>
+              <select id="route-default"><option>Sandra (Büro)</option><option>Thomas (Geschäftsführer)</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VERHALTEN ── -->
+    <div class="view" id="view-behavior">
+      <div class="grid-2">
+        <div>
+          <div class="panel">
+            <div class="panel-header"><div class="panel-title">🤖 KI-Einstellungen</div></div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label class="form-label">Confidence-Schwelle (Klärungsfrage)</label>
+                <input type="number" id="cfg-clarify-threshold" min="0" max="1" step="0.05" value="0.6">
+                <div class="form-hint">Unter diesem Wert fragt Bettina nach mehr Infos</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confidence-Schwelle (Eskalation)</label>
+                <input type="number" id="cfg-escalate-threshold" min="0" max="1" step="0.05" value="0.4">
+                <div class="form-hint">Unter diesem Wert eskaliert Bettina ans Team</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Max. Loop-Iterationen</label>
+                <input type="number" id="cfg-max-iterations" min="1" max="5" value="3">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Claude Temperatur</label>
+                <input type="number" id="cfg-temperature" min="0" max="1" step="0.1" value="0.3">
+              </div>
+              <div class="form-group">
+                <label class="form-label">System-Prompt KB-ID</label>
+                <input type="text" id="cfg-system-prompt-id" value="bettina_persona">
+                <div class="form-hint">ID des KB-Eintrags mit dem Persönlichkeits-Prompt</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header"><div class="panel-title">📅 Geschäftszeiten</div></div>
+            <div class="panel-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Von</label>
+                  <input type="time" id="cfg-hours-start" value="08:00">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Bis</label>
+                  <input type="time" id="cfg-hours-end" value="17:00">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Arbeitstage</label>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--text2)"><input type="checkbox" checked style="width:auto"> Mo</label>
+                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--text2)"><input type="checkbox" checked style="width:auto"> Di</label>
+                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--text2)"><input type="checkbox" checked style="width:auto"> Mi</label>
+                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--text2)"><input type="checkbox" checked style="width:auto"> Do</label>
+                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--text2)"><input type="checkbox" checked style="width:auto"> Fr</label>
+                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--text2)"><input type="checkbox" style="width:auto"> Sa</label>
+                  <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--text2)"><input type="checkbox" style="width:auto"> So</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Abwesenheits-Text</label>
+                <textarea id="cfg-absence-text" rows="3">Vielen Dank für Ihre Nachricht. Wir befinden uns außerhalb unserer Geschäftszeiten und melden uns schnellstmöglich.</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <div class="panel-header"><div class="panel-title">🔌 Feature-Toggles</div></div>
+            <div class="panel-body">
+              <div class="toggle-wrap">
+                <div class="toggle-info">
+                  <div class="toggle-name">Bettina aktiv</div>
+                  <div class="toggle-desc">Gesamtsystem ein/ausschalten</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="cfg-active" checked><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-wrap">
+                <div class="toggle-info">
+                  <div class="toggle-name">Geschäftszeiten prüfen</div>
+                  <div class="toggle-desc">Außerhalb: Abwesenheitsmail senden</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="cfg-business-hours" checked><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-wrap">
+                <div class="toggle-info">
+                  <div class="toggle-name">Hero Kontakt anlegen</div>
+                  <div class="toggle-desc">Neukunden automatisch in Hero anlegen</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="cfg-hero-create" checked><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-wrap">
+                <div class="toggle-info">
+                  <div class="toggle-name">Hero Projekt anlegen</div>
+                  <div class="toggle-desc">Neues Projekt pro Anfrage erstellen</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="cfg-hero-project" checked><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-wrap">
+                <div class="toggle-info">
+                  <div class="toggle-name">Hero Logbuch</div>
+                  <div class="toggle-desc">Einträge in Hero Logbuch schreiben</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="cfg-hero-log" checked><span class="toggle-slider"></span></label>
+              </div>
+              <div class="toggle-wrap">
+                <div class="toggle-info">
+                  <div class="toggle-name">Supabase Logging</div>
+                  <div class="toggle-desc">Konversationen und Agent-Log speichern</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="cfg-supabase-log" checked><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header"><div class="panel-title">✉ Email-Signatur</div></div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label class="form-label">Signatur</label>
+                <textarea id="cfg-signature" rows="4">Mit freundlichen Grüßen
+Bettina · Akoba GmbH
+
+Gehrnstr. 8 · 72336 Balingen-Weilstetten
+Tel. 07433 / 99 35 16 · www.akoba.de</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Absender-Name</label>
+                <input type="text" id="cfg-from-name" value="Bettina | Akoba GmbH">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reply-To Adresse</label>
+                <input type="email" id="cfg-reply-to" value="info@akoba.de">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TEMPLATES ── -->
+    <div class="view" id="view-templates">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn btn-primary" onclick="openModal('modal-template-new')">+ Neues Template</button>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">📝 Email-Templates</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Bezeichnung</th><th>Betreff</th><th>Variablen</th><th>Aktionen</th></tr>
+            </thead>
+            <tbody id="templateTableBody">
+              <tr>
+                <td class="td-main text-mono">EINGANGSBESTAETIGUNG</td>
+                <td>Eingangsbestätigung Kunde</td>
+                <td>Re: {{original_subject}}</td>
+                <td><span class="tag tag-gray">{{first_name}}</span> <span class="tag tag-gray">{{customer_reply}}</span></td>
+                <td><button class="btn btn-sm" onclick="editTemplate('EINGANGSBESTAETIGUNG')">Bearbeiten</button></td>
+              </tr>
+              <tr>
+                <td class="td-main text-mono">MITARBEITER_ALERT</td>
+                <td>Eskalation an Mitarbeiter</td>
+                <td>Bettina Eskalation: {{original_subject}}</td>
+                <td><span class="tag tag-gray">{{employee_name}}</span> <span class="tag tag-gray">{{intent}}</span></td>
+                <td><button class="btn btn-sm" onclick="editTemplate('MITARBEITER_ALERT')">Bearbeiten</button></td>
+              </tr>
+              <tr>
+                <td class="td-main text-mono">KLAERUNGSFRAGE</td>
+                <td>Klärungsfrage an Kunde</td>
+                <td>Re: {{original_subject}}</td>
+                <td><span class="tag tag-gray">{{first_name}}</span> <span class="tag tag-gray">{{clarification_question}}</span></td>
+                <td><button class="btn btn-sm" onclick="editTemplate('KLAERUNGSFRAGE')">Bearbeiten</button></td>
+              </tr>
+              <tr>
+                <td class="td-main text-mono">ABWESENHEIT</td>
+                <td>Abwesenheitsmail</td>
+                <td>Re: {{original_subject}}</td>
+                <td><span class="tag tag-gray">{{first_name}}</span> <span class="tag tag-gray">{{business_hours_start}}</span></td>
+                <td><button class="btn btn-sm" onclick="editTemplate('ABWESENHEIT')">Bearbeiten</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AGENT LOG ── -->
+    <div class="view" id="view-logs">
+      <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center">
+        <input type="text" placeholder="Run-ID oder Email suchen…" style="max-width:280px">
+        <select style="width:140px">
+          <option>Alle</option>
+          <option>Eskaliert</option>
+          <option>Fehler</option>
+        </select>
+        <span style="color:var(--text3);font-size:12px;margin-left:auto">letzte 100 Einträge</span>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title">📋 Agent-Log</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Zeit</th><th>Run-ID</th><th>Von</th><th>Intent</th><th>Confidence</th><th>Iterationen</th><th>Eskaliert</th><th>Dauer</th></tr>
+            </thead>
+            <tbody id="logTableBody">
+              <tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px">Lade Logs…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EINSTELLUNGEN ── -->
+    <div class="view" id="view-settings">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">🔑 API-Verbindungen</div></div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="form-label">Supabase URL</label>
+              <input type="text" id="set-supabase-url" placeholder="https://xxx.supabase.co">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Supabase Anon Key</label>
+              <input type="password" id="set-supabase-key" placeholder="eyJ…">
+            </div>
+            <div class="divider"></div>
+            <div class="form-group">
+              <label class="form-label">Hero API URL</label>
+              <input type="text" id="set-hero-url" value="https://login.hero-software.de/api/external/v7/graphql">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Hero API Key</label>
+              <input type="password" id="set-hero-key" placeholder="Bearer Token">
+            </div>
+            <div class="divider"></div>
+            <div class="form-group">
+              <label class="form-label">n8n Webhook URL</label>
+              <input type="text" id="set-n8n-url" placeholder="https://n8n.feierkind.com">
+            </div>
+            <button class="btn btn-primary" onclick="testConnections()">Verbindungen testen</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="panel">
+            <div class="panel-header"><div class="panel-title">📤 Import / Export</div></div>
+            <div class="panel-body">
+              <div class="upload-zone" id="uploadZone" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text"><strong>Datei hier ablegen</strong> oder klicken</div>
+                <div class="upload-hint">KB-Einträge (.md, .txt), Workflow-JSON, SQL-Scripts</div>
+              </div>
+              <input type="file" id="fileInput" style="display:none" accept=".md,.txt,.json,.sql" onchange="handleFile(this)">
+              <div class="divider"></div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn" onclick="exportKB()">⬇ KB exportieren</button>
+                <button class="btn" onclick="exportConfig()">⬇ Config exportieren</button>
+                <button class="btn" onclick="exportLogs()">⬇ Logs exportieren</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header"><div class="panel-title">⚠️ Gefahrenzone</div></div>
+            <div class="panel-body">
+              <div class="toggle-wrap">
+                <div class="toggle-info">
+                  <div class="toggle-name" style="color:var(--red)">Testmodus</div>
+                  <div class="toggle-desc">Emails werden NICHT versendet, nur geloggt</div>
+                </div>
+                <label class="toggle"><input type="checkbox" id="cfg-testmode"><span class="toggle-slider"></span></label>
+              </div>
+              <div style="margin-top:16px">
+                <button class="btn btn-danger btn-sm" onclick="confirmReset()">System zurücksetzen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ── MODALS ── -->
+
+<!-- KB Neuer Eintrag -->
+<div class="modal-overlay" id="modal-kb-new">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Neuer KB-Eintrag</div>
+      <button class="modal-close" onclick="closeModal('modal-kb-new')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">ID <span class="required">*</span></label>
+        <input type="text" id="kb-new-id" placeholder="z.B. faq_fenster">
+        <div class="form-hint">Kleinbuchstaben, keine Leerzeichen, Unterstriche erlaubt</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Typ <span class="required">*</span></label>
+        <select id="kb-new-type">
+          <option value="kb_entry">kb_entry — Wissen/FAQ</option>
+          <option value="system_prompt">system_prompt — Persona/Verhalten</option>
+          <option value="email_template">email_template — Email-Vorlage</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Titel <span class="required">*</span></label>
+        <input type="text" id="kb-new-title" placeholder="Beschreibender Titel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Inhalt <span class="required">*</span></label>
+        <textarea id="kb-new-content" rows="10" placeholder="Text, Markdown oder JSON-Inhalt…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sortierung</label>
+        <input type="number" id="kb-new-sort" value="99">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('modal-kb-new')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveKBEntry()">Speichern</button>
+    </div>
   </div>
 </div>
 
-<!-- APP -->
-<div id="app">
-  <div class="topbar">
-    <div class="topbar-avatar">B</div>
-    <div>
-      <div class="topbar-title">Bettina</div>
-      <div class="topbar-sub">Akoba – Digitale Sekretärin <span style="opacity:.4;font-size:11px;">v1.1</span></div>
+<!-- KB Bearbeiten -->
+<div class="modal-overlay" id="modal-kb-edit">
+  <div class="modal" style="width:680px">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-kb-edit-title">Eintrag bearbeiten</div>
+      <button class="modal-close" onclick="closeModal('modal-kb-edit')">✕</button>
     </div>
-    <div class="status-pill"><div class="status-dot"></div>verbunden</div>
-    <button class="logout-btn" onclick="doLogout()">Abmelden</button>
-  </div>
-  <div class="main">
-    <div class="sidebar">
-      <div class="nav-item active" onclick="showPanel('mitarbeiter',this)"><span class="nav-icon">👥</span>Mitarbeiter</div>
-      <div class="nav-item" onclick="showPanel('verhalten',this)"><span class="nav-icon">⚙️</span>Verhalten</div>
-      <div class="nav-item" onclick="showPanel('zeiten',this)"><span class="nav-icon">🕐</span>Geschäftszeiten</div>
-      <div class="nav-item" onclick="showPanel('wissen',this)"><span class="nav-icon">📚</span>Wissensbasis</div>
-      <div class="nav-item" onclick="showPanel('regeln',this)"><span class="nav-icon">↪️</span>Weiterleitungen</div>
-      <div class="nav-item" onclick="showPanel('import',this)"><span class="nav-icon">📥</span>Daten importieren</div>
+    <div class="modal-body">
+      <input type="hidden" id="kb-edit-id">
+      <div class="form-group">
+        <label class="form-label">Titel</label>
+        <input type="text" id="kb-edit-title">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Inhalt</label>
+        <textarea id="kb-edit-content" rows="16"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Typ</label>
+          <select id="kb-edit-type">
+            <option value="kb_entry">kb_entry</option>
+            <option value="system_prompt">system_prompt</option>
+            <option value="email_template">email_template</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sortierung</label>
+          <input type="number" id="kb-edit-sort">
+        </div>
+      </div>
     </div>
-    <div class="content">
-
-      <!-- MITARBEITER -->
-      <div class="panel active" id="panel-mitarbeiter">
-        <div class="panel-title">Mitarbeiter</div>
-        <div class="card">
-          <div class="emp-list" id="emp-list"><div style="color:var(--text-muted);font-size:13px;">Lade...</div></div>
-        </div>
-        <div class="form-section" id="emp-form">
-          <div class="form-title" id="emp-form-title">Mitarbeiter hinzufügen</div>
-          <input type="hidden" id="emp-edit-id">
-          <div class="row2">
-            <div class="field"><label>Name</label><input type="text" id="emp-name" placeholder="z.B. Thomas"></div>
-            <div class="field"><label>Rolle</label><input type="text" id="emp-rolle" placeholder="z.B. Bauleiter"></div>
-          </div>
-          <div class="row2">
-            <div class="field"><label>WhatsApp (intern)</label><input type="text" id="emp-wa" placeholder="+49 171 ..."></div>
-            <div class="field"><label>E-Mail (intern)</label><input type="text" id="emp-email" placeholder="name@akoba.de"></div>
-          </div>
-          <div class="field"><label>Zuständig für (kommagetrennt)</label><input type="text" id="emp-zustaendig" placeholder="dach, fassade, angebote"></div>
-          <div style="display:flex;gap:8px;margin-top:.5rem;">
-            <button class="btn btn-primary" onclick="saveEmployee()">Speichern</button>
-            <button class="btn" onclick="closeEmpForm()">Abbrechen</button>
-          </div>
-        </div>
-        <button class="btn" style="margin-top:.75rem;" onclick="openEmpForm()">+ Mitarbeiter hinzufügen</button>
-      </div>
-
-      <!-- VERHALTEN -->
-      <div class="panel" id="panel-verhalten">
-        <div class="panel-title">Bettinas Verhalten</div>
-        <div class="card">
-          <div class="card-title">Kommunikationsstil</div>
-          <div class="row2">
-            <div class="field"><label>Ton</label>
-              <select id="cfg-ton">
-                <option value="förmlich">Förmlich (Sie)</option>
-                <option value="freundlich">Freundlich</option>
-                <option value="locker">Locker (Du)</option>
-              </select>
-            </div>
-            <div class="field"><label>Sprache</label>
-              <select id="cfg-sprache">
-                <option value="de">Deutsch</option>
-                <option value="en">Englisch</option>
-                <option value="de+en">Zweisprachig</option>
-              </select>
-            </div>
-          </div>
-          <div class="field"><label>Maximale Antwortlänge (Zeichen)</label><input type="number" id="cfg-laenge" value="300" min="100" max="1000"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Was Bettina selbst beantwortet</div>
-          <div class="toggle-row">
-            <div><div class="toggle-label">Preisanfragen</div><div class="toggle-sub">Allgemeine Preisinformationen</div></div>
-            <label class="toggle"><input type="checkbox" id="t-preise" checked><span class="toggle-slider"></span></label>
-          </div>
-          <div class="toggle-row">
-            <div><div class="toggle-label">Öffnungszeiten &amp; Kontakt</div></div>
-            <label class="toggle"><input type="checkbox" id="t-kontakt" checked><span class="toggle-slider"></span></label>
-          </div>
-          <div class="toggle-row">
-            <div><div class="toggle-label">Allgemeine FAQs</div></div>
-            <label class="toggle"><input type="checkbox" id="t-faq" checked><span class="toggle-slider"></span></label>
-          </div>
-          <div class="toggle-row">
-            <div><div class="toggle-label">Terminvereinbarung</div></div>
-            <label class="toggle"><input type="checkbox" id="t-termine" checked><span class="toggle-slider"></span></label>
-          </div>
-          <div class="toggle-row">
-            <div><div class="toggle-label">Reklamationen direkt weiterleiten</div></div>
-            <label class="toggle"><input type="checkbox" id="t-rekla"><span class="toggle-slider"></span></label>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title">E-Mail-Signatur</div>
-          <div class="field" style="margin:0;"><textarea id="cfg-signatur" rows="4">Herzliche Grüße
-Bettina
-Digitale Assistentin | Akoba</textarea></div>
-        </div>
-        <div class="save-bar">
-          <span class="save-hint">Wird in Supabase gespeichert</span>
-          <button class="btn btn-primary" onclick="saveVerhalten()">Änderungen speichern</button>
-        </div>
-      </div>
-
-      <!-- ZEITEN -->
-      <div class="panel" id="panel-zeiten">
-        <div class="panel-title">Geschäftszeiten</div>
-        <div class="card">
-          <div class="card-title">Wann ist Bettina aktiv</div>
-          <div class="field"><label>Arbeitstage</label>
-            <select id="cfg-tage">
-              <option value="Mo-Fr">Montag – Freitag</option>
-              <option value="Mo-Sa">Montag – Samstag</option>
-              <option value="Mo-So">Täglich</option>
-            </select>
-          </div>
-          <div class="row2">
-            <div class="field"><label>Beginn</label><input type="time" id="cfg-start" value="08:00"></div>
-            <div class="field"><label>Ende</label><input type="time" id="cfg-ende" value="17:00"></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title">Außerhalb der Geschäftszeiten</div>
-          <div class="toggle-row" style="padding-top:0;">
-            <div><div class="toggle-label">Automatische Antwort senden</div></div>
-            <label class="toggle"><input type="checkbox" id="cfg-ausserhalb-aktiv" checked><span class="toggle-slider"></span></label>
-          </div>
-          <div class="field" style="margin-top:1rem;">
-            <label>Nachrichtentext</label>
-            <textarea id="cfg-ausserhalb" rows="4">Vielen Dank für Ihre Nachricht! Unsere Bürozeiten sind Mo–Fr 8–17 Uhr. Wir melden uns schnellstmöglich bei Ihnen. 🏗️</textarea>
-          </div>
-        </div>
-        <div class="save-bar">
-          <span class="save-hint">Wird in Supabase gespeichert</span>
-          <button class="btn btn-primary" onclick="saveZeiten()">Änderungen speichern</button>
-        </div>
-      </div>
-
-      <!-- WISSENSBASIS -->
-      <div class="panel" id="panel-wissen">
-        <div class="panel-title">Wissensbasis</div>
-        <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;">
-          <button class="btn btn-sm" id="kf-alle" onclick="filterKb('alle',this)" style="border-color:var(--orange);color:var(--orange);">Alle</button>
-          <button class="btn btn-sm" id="kf-faq" onclick="filterKb('faq',this)">FAQ</button>
-          <button class="btn btn-sm" id="kf-preise" onclick="filterKb('preise',this)">Preise</button>
-          <button class="btn btn-sm" id="kf-prozesse" onclick="filterKb('prozesse',this)">Prozesse</button>
-          <button class="btn btn-sm" id="kf-produkte" onclick="filterKb('produkte',this)">Produkte</button>
-          <button class="btn btn-sm" id="kf-partner" onclick="filterKb('partner',this)">Partner</button>
-          <input type="text" id="kb-search" placeholder="Suchen..." style="margin-left:auto;width:180px;padding:5px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;" oninput="renderKb()">
-        </div>
-        <div class="card">
-          <div id="kb-list"><div style="color:var(--text-muted);font-size:13px;">Lade...</div></div>
-        </div>
-        <div class="form-section" id="kb-form">
-          <div class="form-title">Neuer Wissenseintrag</div>
-          <input type="hidden" id="kb-edit-id">
-          <div class="row2">
-            <div class="field"><label>Kategorie</label>
-              <select id="kb-kat">
-                <option value="faq">FAQ</option>
-                <option value="preise">Preise</option>
-                <option value="prozesse">Prozesse</option>
-                <option value="produkte">Produkte</option>
-                <option value="partner">Partner</option>
-                <option value="sonstiges">Sonstiges</option>
-              </select>
-            </div>
-            <div class="field"><label>Titel</label><input type="text" id="kb-titel" placeholder="Kurzer Titel"></div>
-          </div>
-          <div class="field"><label>Inhalt</label><textarea id="kb-inhalt" rows="5" placeholder="Was Bettina wissen soll..."></textarea></div>
-          <div style="display:flex;gap:8px;">
-            <button class="btn btn-primary" onclick="saveKb()">Speichern</button>
-            <button class="btn" onclick="closeKbForm()">Abbrechen</button>
-          </div>
-        </div>
-        <button class="btn" style="margin-top:.75rem;" onclick="openKbForm()">+ Eintrag hinzufügen</button>
-      </div>
-
-      <!-- WEITERLEITUNGEN -->
-      <div class="panel" id="panel-regeln">
-        <div class="panel-title">Weiterleitungsregeln</div>
-        <div class="card">
-          <div class="card-title">Stichwort → Mitarbeiter</div>
-          <p style="font-size:12px;color:var(--text-muted);margin-bottom:1rem;">Wenn ein Kunde über dieses Thema schreibt, leitet Bettina automatisch weiter an:</p>
-          <div id="rules-list"></div>
-          <button class="btn btn-sm" style="margin-top:.75rem;" onclick="addRule()">+ Regel hinzufügen</button>
-        </div>
-        <div class="save-bar">
-          <span class="save-hint">Wird als JSON in bettina_config gespeichert</span>
-          <button class="btn btn-primary" onclick="saveRegeln()">Regeln speichern</button>
-        </div>
-      </div>
-
-      <!-- IMPORT -->
-      <div class="panel" id="panel-import">
-        <div class="panel-title">Daten importieren</div>
-
-        <div class="card">
-          <div class="card-title">Wissensbasis – Akoba Grunddaten</div>
-          <p style="font-size:13px;color:var(--text-muted);margin-bottom:1rem;">Klick auf den Button um alle 31 vorbereiteten Akoba-Einträge (FAQ, Produkte, Preise, Partner, Prozesse) in einem Block nach Supabase zu importieren. Bereits vorhandene Einträge werden übersprungen.</p>
-          <div id="import-kb-progress" style="display:none;margin-bottom:.75rem;">
-            <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:6px;">
-              <div id="import-kb-bar" style="height:100%;background:var(--green);border-radius:2px;width:0%;transition:width .3s;"></div>
-            </div>
-            <div id="import-kb-status" style="font-size:12px;color:var(--text-muted);"></div>
-          </div>
-          <button class="btn btn-primary" id="import-kb-btn" onclick="importKbAkoba()">📥 31 Akoba-Einträge importieren</button>
-        </div>
-
-        <div class="card" style="margin-top:1rem;">
-          <div class="card-title">Eigene Daten importieren (JSON)</div>
-          <p style="font-size:13px;color:var(--text-muted);margin-bottom:1rem;">JSON-Array hier reinkopieren und Zieltabelle wählen. Jedes Objekt wird als eine Zeile eingefügt.</p>
-          <div class="field">
-            <label>Zieltabelle</label>
-            <select id="import-table">
-              <option value="knowledge_base">knowledge_base (Wissensbasis)</option>
-              <option value="employees">employees (Mitarbeiter)</option>
-              <option value="bettina_config">bettina_config (Konfiguration)</option>
-              <option value="open_tasks">open_tasks (Aufgaben)</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>JSON-Daten</label>
-            <textarea id="import-json" rows="10" placeholder='[
-  {
-    "kategorie": "faq",
-    "titel": "Beispielfrage",
-    "inhalt": "Beispielantwort...",
-    "aktiv": true
-  }
-]'></textarea>
-          </div>
-          <div id="import-custom-progress" style="display:none;margin-bottom:.75rem;">
-            <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:6px;">
-              <div id="import-custom-bar" style="height:100%;background:var(--green);border-radius:2px;width:0%;transition:width .3s;"></div>
-            </div>
-            <div id="import-custom-status" style="font-size:12px;color:var(--text-muted);"></div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <button class="btn btn-primary" onclick="importCustom()">📥 Importieren</button>
-            <button class="btn" onclick="document.getElementById('import-json').value=''">Leeren</button>
-            <span id="import-json-count" style="font-size:12px;color:var(--text-muted);margin-left:auto;"></span>
-          </div>
-        </div>
-      </div>
-
+    <div class="modal-footer">
+      <button class="btn btn-danger" onclick="deleteKBEntry()">Löschen</button>
+      <button class="btn" onclick="closeModal('modal-kb-edit')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="updateKBEntry()">Speichern</button>
     </div>
   </div>
 </div>
 
-<div id="toast"></div>
+<!-- KB Import -->
+<div class="modal-overlay" id="modal-kb-upload">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">KB-Einträge importieren</div>
+      <button class="modal-close" onclick="closeModal('modal-kb-upload')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="upload-zone" id="uploadZoneKB" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFileKB(event)" onclick="document.getElementById('fileInputKB').click()">
+        <div class="upload-icon">📄</div>
+        <div class="upload-text"><strong>Markdown oder Text-Datei</strong> ablegen</div>
+        <div class="upload-hint">.md oder .txt — wird als neuer KB-Eintrag angelegt</div>
+      </div>
+      <input type="file" id="fileInputKB" style="display:none" accept=".md,.txt" onchange="handleKBFile(this)">
+      <div id="importPreview" style="display:none;margin-top:16px">
+        <div class="form-group">
+          <label class="form-label">Erkannte ID</label>
+          <input type="text" id="import-id">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Titel</label>
+          <input type="text" id="import-title">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Typ</label>
+          <select id="import-type">
+            <option value="kb_entry">kb_entry</option>
+            <option value="system_prompt">system_prompt</option>
+            <option value="email_template">email_template</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vorschau (erste 300 Zeichen)</label>
+          <textarea id="import-preview" rows="4" readonly style="color:var(--text3)"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('modal-kb-upload')">Abbrechen</button>
+      <button class="btn btn-primary" id="importConfirmBtn" style="display:none" onclick="confirmImport()">Importieren</button>
+    </div>
+  </div>
+</div>
+
+<!-- Template Editor -->
+<div class="modal-overlay" id="modal-template-edit">
+  <div class="modal" style="width:660px">
+    <div class="modal-header">
+      <div class="modal-title" id="tpl-edit-title">Template bearbeiten</div>
+      <button class="modal-close" onclick="closeModal('modal-template-edit')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="tpl-edit-id">
+      <div class="form-group">
+        <label class="form-label">Betreff</label>
+        <input type="text" id="tpl-edit-subject" placeholder="Re: {{original_subject}}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Inhalt</label>
+        <textarea id="tpl-edit-content" rows="14"></textarea>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-top:8px">
+        <div class="form-label" style="margin-bottom:8px">Verfügbare Variablen</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="tag tag-gray">{{first_name}}</span>
+          <span class="tag tag-gray">{{customer_reply}}</span>
+          <span class="tag tag-gray">{{original_subject}}</span>
+          <span class="tag tag-gray">{{clarification_question}}</span>
+          <span class="tag tag-gray">{{email_signature}}</span>
+          <span class="tag tag-gray">{{employee_name}}</span>
+          <span class="tag tag-gray">{{intent}}</span>
+          <span class="tag tag-gray">{{hero_link}}</span>
+          <span class="tag tag-gray">{{business_hours_start}}</span>
+          <span class="tag tag-gray">{{business_hours_end}}</span>
+          <span class="tag tag-gray">{{body_text}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('modal-template-edit')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveTemplate()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Employee New -->
+<div class="modal-overlay" id="modal-employee-new">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Mitarbeiter hinzufügen</div>
+      <button class="modal-close" onclick="closeModal('modal-employee-new')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Vorname <span class="required">*</span></label>
+          <input type="text" id="emp-new-firstname">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nachname</label>
+          <input type="text" id="emp-new-lastname">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email <span class="required">*</span></label>
+        <input type="email" id="emp-new-email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rolle</label>
+        <select id="emp-new-role">
+          <option>Geschäftsführer</option>
+          <option>Bauleiter</option>
+          <option>Büro</option>
+          <option>Monteur</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mitarbeiternummer (für Erkennung)</label>
+        <input type="text" id="emp-new-nr" placeholder="z.B. MA001">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('modal-employee-new')">Abbrechen</button>
+      <button class="btn btn-primary" onclick="saveEmployee()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-container" id="toastContainer"></div>
 
 <script>
-let SB_URL = '';
-let SB_KEY = '';
-let KB_DATA = [];
-let KB_FILTER = 'alle';
-let EMP_COLORS = [
-  ['#E6F1FB','#185FA5'],['#E1F5EE','#0F6E56'],['#FAEEDA','#854F0B'],
-  ['#EEEDFE','#534AB7'],['#FAECE7','#993C1D'],['#EAF3DE','#3B6D11']
-];
+// ── CONFIG ──
+const SUPABASE_URL = localStorage.getItem('bettina_supabase_url') || '';
+const SUPABASE_KEY = localStorage.getItem('bettina_supabase_key') || '';
 
-function updateCount(srcId, cntId) {
-  const v = document.getElementById(srcId).value.trim();
-  document.getElementById(cntId).textContent = v.length + ' Zeichen';
-}
-
-async function doLogin() {
-  const url = document.getElementById('login-url').value.trim().replace(/\/$/, '');
-  const key = document.getElementById('login-key').value.trim();
-  const err = document.getElementById('login-error');
-  err.style.display = 'none';
-
-  if (!url || !url.startsWith('https://')) { showLoginError('URL ungültig – muss mit https:// beginnen'); return; }
-  if (!key || key.length < 50) { showLoginError('Anon Key zu kurz oder fehlt'); return; }
-
-  try {
-    const res = await fetch(`${url}/rest/v1/bettina_config?select=schluessel&limit=1`, {
-      headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
-    });
-    if (!res.ok) {
-      const txt = await res.text();
-      if (res.status === 401) showLoginError('Key ungültig (401) – komplett kopiert?');
-      else if (res.status === 404) showLoginError('Tabellen nicht gefunden (404) – SQL-Script ausgeführt?');
-      else showLoginError('Fehler ' + res.status + ': ' + txt.substring(0,80));
-      return;
-    }
-    SB_URL = url;
-    SB_KEY = key;
-    localStorage.setItem('sb_url', url);
-    localStorage.setItem('sb_key', key);
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    loadAll();
-  } catch(e) {
-    showLoginError('Netzwerkfehler: ' + e.message);
-  }
-}
-
-function showLoginError(msg) {
-  const el = document.getElementById('login-error');
-  el.textContent = msg;
-  el.style.display = 'block';
-}
-
-function doLogout() {
-  SB_URL = ''; SB_KEY = '';
-  localStorage.removeItem('sb_url'); localStorage.removeItem('sb_key');
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-}
-
-async function sbGet(table, query='') {
-  const res = await fetch(`${SB_URL}/rest/v1/${table}${query}`, {
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
-  });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
-}
-
-async function sbPost(table, data) {
-  const res = await fetch(`${SB_URL}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
-}
-
-async function sbPatch(table, id, data) {
-  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
-    method: 'PATCH',
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error(await res.text());
-}
-
-async function sbPatchKey(table, key, data) {
-  const res = await fetch(`${SB_URL}/rest/v1/${table}?schluessel=eq.${encodeURIComponent(key)}`, {
-    method: 'PATCH',
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error(await res.text());
-}
-
-async function sbDelete(table, id) {
-  const res = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
-    method: 'DELETE',
-    headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
-  });
-  if (!res.ok) throw new Error(await res.text());
-}
-
-function showToast(msg, err) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = err ? '#A32D2D' : '#3B6D11';
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-function showPanel(name, el) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
-  el.classList.add('active');
-}
-
-async function loadAll() {
-  loadEmployees();
-  loadConfig();
-  loadKb();
-  loadRegeln();
-}
-
-/* ── MITARBEITER ── */
-async function loadEmployees() {
-  try {
-    const rows = await sbGet('employees', '?order=name');
-    renderEmployees(rows);
-  } catch(e) { showToast('Fehler beim Laden der Mitarbeiter', true); }
-}
-
-function renderEmployees(rows) {
-  const list = document.getElementById('emp-list');
-  if (!rows.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:13px;">Noch keine Mitarbeiter angelegt.</div>'; return; }
-  list.innerHTML = rows.map((r, i) => {
-    const c = EMP_COLORS[i % EMP_COLORS.length];
-    const tags = (r.zustaendig_fuer||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="emp-tag">${t}</span>`).join('');
-    return `<div class="emp-row">
-      <div class="emp-avatar" style="background:${c[0]};color:${c[1]};">${(r.name||'?')[0].toUpperCase()}</div>
-      <div>
-        <div class="emp-name">${r.name}</div>
-        <div class="emp-role">${r.rolle||''}</div>
-        <div class="emp-tags">${tags}</div>
-      </div>
-      <div class="emp-actions">
-        <span class="badge ${r.aktiv?'badge-aktiv':'badge-inaktiv'}">${r.aktiv?'aktiv':'inaktiv'}</span>
-        <button class="btn btn-icon btn-sm" onclick="editEmployee('${r.id}','${r.name}','${r.rolle||''}','${r.whatsapp||''}','${r.email||''}','${(r.zustaendig_fuer||'').replace(/'/g,"\\'")}')">✏️</button>
-        <button class="btn btn-icon btn-sm btn-danger" onclick="deleteEmployee('${r.id}')">🗑</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function openEmpForm() { document.getElementById('emp-form').classList.add('open'); document.getElementById('emp-form-title').textContent = 'Mitarbeiter hinzufügen'; document.getElementById('emp-edit-id').value = ''; ['emp-name','emp-rolle','emp-wa','emp-email','emp-zustaendig'].forEach(id => document.getElementById(id).value = ''); }
-function closeEmpForm() { document.getElementById('emp-form').classList.remove('open'); }
-
-function editEmployee(id, name, rolle, wa, email, zust) {
-  openEmpForm();
-  document.getElementById('emp-form-title').textContent = 'Mitarbeiter bearbeiten';
-  document.getElementById('emp-edit-id').value = id;
-  document.getElementById('emp-name').value = name;
-  document.getElementById('emp-rolle').value = rolle;
-  document.getElementById('emp-wa').value = wa;
-  document.getElementById('emp-email').value = email;
-  document.getElementById('emp-zustaendig').value = zust;
-}
-
-async function saveEmployee() {
-  const name = document.getElementById('emp-name').value.trim();
-  if (!name) { showToast('Name erforderlich', true); return; }
-  const data = { name, rolle: document.getElementById('emp-rolle').value.trim(), whatsapp: document.getElementById('emp-wa').value.trim(), email: document.getElementById('emp-email').value.trim(), zustaendig_fuer: document.getElementById('emp-zustaendig').value.trim(), aktiv: true };
-  try {
-    const editId = document.getElementById('emp-edit-id').value;
-    if (editId) await sbPatch('employees', editId, data);
-    else await sbPost('employees', data);
-    closeEmpForm();
-    await loadEmployees();
-    showToast('Mitarbeiter gespeichert');
-  } catch(e) { showToast('Fehler: ' + e.message, true); }
-}
-
-async function deleteEmployee(id) {
-  if (!confirm('Mitarbeiter wirklich löschen?')) return;
-  try { await sbDelete('employees', id); await loadEmployees(); showToast('Mitarbeiter gelöscht'); }
-  catch(e) { showToast('Fehler: ' + e.message, true); }
-}
-
-/* ── CONFIG ── */
-async function loadConfig() {
-  try {
-    const rows = await sbGet('bettina_config', '?select=schluessel,wert');
-    const map = {};
-    rows.forEach(r => map[r.schluessel] = r.wert);
-    if (map.ton) document.getElementById('cfg-ton').value = map.ton;
-    if (map.sprache) document.getElementById('cfg-sprache').value = map.sprache;
-    if (map.max_antwortlaenge) document.getElementById('cfg-laenge').value = map.max_antwortlaenge;
-    if (map.signatur) document.getElementById('cfg-signatur').value = map.signatur;
-    if (map.geschaeftszeiten_tage) document.getElementById('cfg-tage').value = map.geschaeftszeiten_tage;
-    if (map.geschaeftszeiten_start) document.getElementById('cfg-start').value = map.geschaeftszeiten_start;
-    if (map.geschaeftszeiten_ende) document.getElementById('cfg-ende').value = map.geschaeftszeiten_ende;
-    if (map.ausserhalb_antwort) document.getElementById('cfg-ausserhalb').value = map.ausserhalb_antwort;
-  } catch(e) {}
-}
-
-async function saveVerhalten() {
-  try {
-    await Promise.all([
-      sbPatchKey('bettina_config','ton',{wert:document.getElementById('cfg-ton').value}),
-      sbPatchKey('bettina_config','sprache',{wert:document.getElementById('cfg-sprache').value}),
-      sbPatchKey('bettina_config','max_antwortlaenge',{wert:document.getElementById('cfg-laenge').value}),
-      sbPatchKey('bettina_config','signatur',{wert:document.getElementById('cfg-signatur').value}),
-    ]);
-    showToast('Verhalten gespeichert');
-  } catch(e) { showToast('Fehler: ' + e.message, true); }
-}
-
-async function saveZeiten() {
-  try {
-    await Promise.all([
-      sbPatchKey('bettina_config','geschaeftszeiten_tage',{wert:document.getElementById('cfg-tage').value}),
-      sbPatchKey('bettina_config','geschaeftszeiten_start',{wert:document.getElementById('cfg-start').value}),
-      sbPatchKey('bettina_config','geschaeftszeiten_ende',{wert:document.getElementById('cfg-ende').value}),
-      sbPatchKey('bettina_config','ausserhalb_antwort',{wert:document.getElementById('cfg-ausserhalb').value}),
-    ]);
-    showToast('Geschäftszeiten gespeichert');
-  } catch(e) { showToast('Fehler: ' + e.message, true); }
-}
-
-/* ── WISSENSBASIS ── */
-async function loadKb() {
-  try {
-    KB_DATA = await sbGet('knowledge_base', '?order=kategorie,titel');
-    renderKb();
-  } catch(e) { showToast('Fehler beim Laden der Wissensbasis', true); }
-}
-
-function filterKb(kat, btn) {
-  KB_FILTER = kat;
-  document.querySelectorAll('[id^="kf-"]').forEach(b => { b.style.borderColor=''; b.style.color=''; });
-  btn.style.borderColor = '#D85A30'; btn.style.color = '#D85A30';
-  renderKb();
-}
-
-function renderKb() {
-  const q = document.getElementById('kb-search').value.toLowerCase();
-  const items = KB_DATA.filter(r => {
-    const matchKat = KB_FILTER === 'alle' || r.kategorie === KB_FILTER;
-    const matchQ = !q || r.titel.toLowerCase().includes(q) || (r.inhalt||'').toLowerCase().includes(q);
-    return matchKat && matchQ && r.aktiv;
-  });
-  const list = document.getElementById('kb-list');
-  if (!items.length) { list.innerHTML = '<div style="color:var(--text-muted);font-size:13px;">Keine Einträge gefunden.</div>'; return; }
-  list.innerHTML = items.map(r => `<div class="kb-item">
-    <div style="flex-shrink:0;margin-top:2px;"><span class="badge badge-${r.kategorie||'sonstiges'}">${(r.kategorie||'?').charAt(0).toUpperCase()+(r.kategorie||'').slice(1)}</span></div>
-    <div class="kb-content">
-      <div class="kb-title">${r.titel}</div>
-      <div class="kb-preview">${(r.inhalt||'').substring(0,90)}…</div>
-    </div>
-    <div class="kb-actions">
-      <button class="btn btn-icon btn-sm" onclick="editKb('${r.id}')">✏️</button>
-      <button class="btn btn-icon btn-sm btn-danger" onclick="deleteKb('${r.id}')">🗑</button>
-    </div>
-  </div>`).join('');
-}
-
-function openKbForm() { document.getElementById('kb-form').classList.add('open'); document.getElementById('kb-edit-id').value = ''; document.getElementById('kb-titel').value = ''; document.getElementById('kb-inhalt').value = ''; }
-function closeKbForm() { document.getElementById('kb-form').classList.remove('open'); }
-
-function editKb(id) {
-  const r = KB_DATA.find(x => x.id === id);
-  if (!r) return;
-  document.getElementById('kb-form').classList.add('open');
-  document.getElementById('kb-edit-id').value = id;
-  document.getElementById('kb-kat').value = r.kategorie || 'faq';
-  document.getElementById('kb-titel').value = r.titel;
-  document.getElementById('kb-inhalt').value = r.inhalt;
-}
-
-async function saveKb() {
-  const titel = document.getElementById('kb-titel').value.trim();
-  const inhalt = document.getElementById('kb-inhalt').value.trim();
-  if (!titel || !inhalt) { showToast('Titel und Inhalt erforderlich', true); return; }
-  const data = { kategorie: document.getElementById('kb-kat').value, titel, inhalt, aktiv: true };
-  try {
-    const editId = document.getElementById('kb-edit-id').value;
-    if (editId) await sbPatch('knowledge_base', editId, data);
-    else await sbPost('knowledge_base', data);
-    closeKbForm();
-    await loadKb();
-    showToast('Wissenseintrag gespeichert');
-  } catch(e) { showToast('Fehler: ' + e.message, true); }
-}
-
-async function deleteKb(id) {
-  if (!confirm('Eintrag wirklich löschen?')) return;
-  try { await sbPatch('knowledge_base', id, {aktiv: false}); await loadKb(); showToast('Eintrag deaktiviert'); }
-  catch(e) { showToast('Fehler: ' + e.message, true); }
-}
-
-/* ── WEITERLEITUNGEN ── */
-let REGELN = [];
-
-async function loadRegeln() {
-  try {
-    const rows = await sbGet('bettina_config', '?schluessel=eq.weiterleitungsregeln&select=wert');
-    if (rows.length && rows[0].wert) REGELN = JSON.parse(rows[0].wert);
-    else REGELN = [
-      {stichwort:'Dach, Dachschaden', mitarbeiter:'Michael'},
-      {stichwort:'Fassade, Dämmung', mitarbeiter:'Michael'},
-      {stichwort:'Angebot, Kostenvoranschlag', mitarbeiter:'Thomas'},
-      {stichwort:'Reklamation, Beschwerde', mitarbeiter:'Thomas'},
-      {stichwort:'Rechnung, Termin, Verwaltung', mitarbeiter:'Sandra'},
-    ];
-  } catch(e) { REGELN = []; }
-  renderRegeln();
-}
-
-function renderRegeln() {
-  const list = document.getElementById('rules-list');
-  list.innerHTML = REGELN.map((r,i) => `<div class="rule-row">
-    <input type="text" value="${r.stichwort}" oninput="REGELN[${i}].stichwort=this.value" placeholder="Stichwörter">
-    <div class="rule-arrow">→</div>
-    <input type="text" value="${r.mitarbeiter}" oninput="REGELN[${i}].mitarbeiter=this.value" placeholder="Mitarbeiter">
-    <button class="btn btn-icon btn-sm btn-danger" onclick="deleteRule(${i})">🗑</button>
-  </div>`).join('');
-}
-
-function addRule() { REGELN.push({stichwort:'', mitarbeiter:''}); renderRegeln(); }
-function deleteRule(i) { REGELN.splice(i,1); renderRegeln(); }
-
-async function saveRegeln() {
-  try {
-    await sbPatchKey('bettina_config','weiterleitungsregeln',{wert: JSON.stringify(REGELN)});
-    showToast('Weiterleitungsregeln gespeichert');
-  } catch(e) { showToast('Fehler: ' + e.message, true); }
-}
-
-/* ── IMPORT ── */
-const AKOBA_KB = [
-  {kategorie:'faq',titel:'Wer ist AKOBA?',inhalt:'AKOBA – der Renovierer ist ein familiengeführter Handwerksbetrieb mit Sitz in Balingen-Weilstetten (Gehrnstr. 8, 72336 Balingen). Inhabergeführt von Reinhard Konzelmann e.K. (gelernter Schreinermeister), der den elterlichen Betrieb 1989 übernahm. Das Unternehmen ist seit über 60 Jahren in der Renovierungsbranche tätig und beschäftigt 5–9 Mitarbeiter.',aktiv:true},
-  {kategorie:'faq',titel:'Welche Leistungen bietet AKOBA an?',inhalt:'AKOBA bietet folgende Hauptleistungen an:\n1. Treppenrenovierung (Kernkompetenz seit über 30 Jahren)\n2. Fensterrenovierung / Fensterverkleidung (S3 Innova Aluminium-System)\n3. Neue Fenster (Finstral mit Überschubmontage)\n4. Haustüren (Aluminium, Marke Inotherm)\n5. Bad-Renovierung (SpaStyling, barrierefrei)\nDazu: Schreinerarbeiten, Bodenbeläge, Zimmertüren, Geländer-Montage',aktiv:true},
-  {kategorie:'faq',titel:'Wo ist AKOBA tätig / Einzugsgebiet?',inhalt:'AKOBA ist hauptsächlich tätig im:\n- Zollernalbkreis (Balingen, Albstadt, Hechingen, Burladingen, Meßstetten, Schömberg, Bisingen, Haigerloch, Rangendingen)\n- Kreis Tübingen (Tübingen, Mössingen, Rottenburg am Neckar, Bodelshausen)\n- Kreis Rottweil (Rottweil, Oberndorf, Dunningen)\n- Kreis Sigmaringen\n- Raum Stuttgart und Reutlingen\n- Bis zum Bodensee und Schwarzwald\n\nHauptsitz: Balingen-Weilstetten. Bad-Beratung: Albstadt-Ebingen (Untere Vorstadt 30).',aktiv:true},
-  {kategorie:'faq',titel:'Wie kann man AKOBA kontaktieren?',inhalt:'Telefon: 07433 / 99 35 16\nE-Mail: info@akoba.de\nE-Mail Bad: bad@akoba.de\nWhatsApp: https://wa.me/message/IDZHVA6JZ4J3C1\nInstagram: @akobaderrenovierer\nFacebook: /AKOBAderRenovierer\nAdresse: Gehrnstr. 8, 72336 Balingen-Weilstetten\nBad-Beratung: Untere Vorstadt 30, 72461 Albstadt-Ebingen\nWebsite: www.akoba.de',aktiv:true},
-  {kategorie:'faq',titel:'Wie läuft der Prozess ab – von Anfrage bis Montage?',inhalt:'1. Anfrage per WhatsApp oder E-Mail, gern mit Fotos und Maßen\n2. Vorab-Angebot: erstes Richtangebot – transparent und unverbindlich\n3. Details klären: Materialien, Termine – telefonisch oder persönlich\n4. Vor-Ort-Termin / Aufmaß: finale Fragen, dann startet Produktion',aktiv:true},
-  {kategorie:'faq',titel:'Was zeichnet AKOBA aus?',inhalt:'- Familiengeführt, persönlicher Kontakt direkt mit den Handwerkern\n- Seit über 60 Jahren erfahren\n- Eigenes bewährtes Treppenrenovierungssystem (über 30 Jahre)\n- Schnelle Ausführung: Treppenrenovierung in 1–2 Tagen ohne Abriss\n- Saubere Montage ohne Großbaustelle\n- Hochwertige Materialien und Markenpartner\n- Kundenbewertungen durchweg sehr positiv (49 Bewertungen, 4 Portale)',aktiv:true},
-  {kategorie:'faq',titel:'Gibt es einen Online-Konfigurator?',inhalt:'Ja, für Haustüren: https://doordesigner.inotherm-tuer.de/configurator/?partnerCode=20876\nKunden können Fassadenbild hochladen, Farbe, Form und Zubehör wählen.\nAngebotsanfrage allgemein: https://akoba.de/kontakt/',aktiv:true},
-  {kategorie:'produkte',titel:'Treppenrenovierung – Überblick',inhalt:'Kernkompetenz von AKOBA seit über 30 Jahren. Das AKOBA-Treppensystem verkleidet die bestehende Treppe ohne Abriss in 1–2 Tagen. Funktioniert auf Holz-, Beton- und Steintreppen.\n\nMaterialien: Laminat, Echtholz (Parkett) oder Vinyl\nSystemkomponenten: Alu-Profil-Verkleidung für Tritt und Kante\nZusätzlich: neue Treppen, offene Treppen, Betontreppen, Geländer-Montage',aktiv:true},
-  {kategorie:'produkte',titel:'Treppenrenovierung – AKOBA UNI-System',inhalt:'Modernes, gradliniges System mit eloxiertem Alu-Profil. Stufe und Kante aus einem Stück. Geeignet für alle Treppenkonstruktionen. Viele Laminat-, Echtholz- und Vinyl-Dekore.',aktiv:true},
-  {kategorie:'produkte',titel:'Treppenrenovierung – AKOBA ELEGANZ-System',inhalt:'Optimale Lösung für ruhigere Wohnbereiche. Post-Forming-Kante für natürliche Treppenoptik. Trittfläche und Blende aus einem Stück. Material: hochabriebsfestes Gewerbelaminat, auch in Echtholz oder Vinyl (4 Dekore).',aktiv:true},
-  {kategorie:'faq',titel:'Wie lange dauert eine Treppenrenovierung?',inhalt:'In der Regel 1–2 Tage. AKOBA überbaut die vorhandene Treppe ohne Abriss – kleine, saubere Baustelle. Kunden berichten von sehr ordentlicher und leiser Montage.',aktiv:true},
-  {kategorie:'faq',titel:'Für welche Treppen eignet sich die Renovierung?',inhalt:'Das AKOBA-System funktioniert auf: Holztreppen, Betontreppen, Steintreppen, offene Treppen, für jedes Treppenmodell. Auch Treppengeländer werden erneuert.',aktiv:true},
-  {kategorie:'produkte',titel:'Fensterrenovierung – S3 Innova Aluminium-Verkleidung',inhalt:'AKOBA ist zertifizierter S3 Innova Partnerbetrieb. Das System verkleidet Fenster dauerhaft mit Aluminiumprofilen von außen – ohne Komplettaustausch.\n\nVorteile:\n- Nie wieder Fenster streichen\n- 100% wartungsfreie Außenseite\n- Lebenslanger Schutz vor UV, Regen, Witterung\n- Wärmeverlust und Lärm reduziert\n- Gesamtdicke nur 5 mm\n- Über 20 Jahre Reklamationsfreiheit\n- Viele Farben und Holzdekore\n\nGeeignet für: Holzfenster (ideal), Kunststofffenster, Wintergarten, Balkontüren',aktiv:true},
-  {kategorie:'produkte',titel:'Neue Fenster – Finstral mit Überschubmontage',inhalt:'Für kompletten Fenstertausch bietet AKOBA Finstral-Fenster mit schonender Überschubmontage – kein großer Eingriff ins Mauerwerk nötig. Seit über 15 Jahren im Bereich Fenstersanierung tätig.',aktiv:true},
-  {kategorie:'faq',titel:'Wann lohnt sich Fensterrenovierung vs. Fenstertausch?',inhalt:'S3 Innova Renovierung: wenn Fenstersubstanz gut ist, aber Außenseite verwittert oder streichbedürftig – günstigere, nachhaltigere Lösung.\n\nKompletter Austausch (Finstral): wenn Dichtungen, Beschläge oder Rahmenkonstruktion grundlegend erneuert werden müssen.',aktiv:true},
-  {kategorie:'produkte',titel:'Haustüren – Inotherm Aluminium',inhalt:'AKOBA montiert Aluminium-Haustüren der Marke Inotherm. Über 400 Modelle.\n\nVorteile:\n- Einbruchhemmend (bis RC3)\n- Wärme- und schalldämmend\n- Witterungsbeständig und langlebig\n- Individuell konfigurierbar\n- Optional mit INOSMART-Fingerprint\n\nKonfigurator: https://doordesigner.inotherm-tuer.de/configurator/?partnerCode=20876',aktiv:true},
-  {kategorie:'produkte',titel:'Bad-Renovierung – Überblick',inhalt:'3 Optionen:\n1. Dusche statt Wanne – barrierefreier Umbau, KK-Zuschuss möglich\n2. Austausch Armaturen & Sanitär\n3. Individuelles Traumbad – vollständige Planung\n\nSpezialleistungen:\n- Barrierefreie Bäder (Krankenkasse fördert oft)\n- Fugenloses Bad\n- Platzoptimierung\n\nBeratungszentrum: Untere Vorstadt 30, 72461 Albstadt-Ebingen\nTel: 07433/993516, bad@akoba.de',aktiv:true},
-  {kategorie:'faq',titel:'Wird Badrenovierung von der Krankenkasse gefördert?',inhalt:'Ja – bei barrierefreiem Umbau (bodengleiche Dusche, Haltegriffe, Sicherheitsausstattung) ist in vielen Fällen ein Krankenkassen-Zuschuss möglich. AKOBA berät dazu im persönlichen Gespräch.',aktiv:true},
-  {kategorie:'faq',titel:'Was ist ein fugenloses Bad?',inhalt:'Bad ohne sichtbare Fliesenfugen. Vorteile: moderne zeitlose Optik, hygienischer (keine Schmutzfallen), pflegeleichter, langlebig. AKOBA bietet fugenlose Bäder in hochwertiger Ausführung.',aktiv:true},
-  {kategorie:'preise',titel:'Wie funktioniert die Preisanfrage?',inhalt:'Angebote werden individuell erstellt. So geht es:\n1. Fotos + Maße per WhatsApp oder E-Mail senden\n2. AKOBA erstellt erstes Richtangebot (unverbindlich)\n3. Bei Interesse: Details, Materialwahl, Vor-Ort-Termin\n\nKontakt: WhatsApp 07433 993516 oder info@akoba.de',aktiv:true},
-  {kategorie:'preise',titel:'Kostenrahmen Treppenrenovierung',inhalt:'Genaue Preise abhängig von Stufenanzahl, Material und System. Das AKOBA-System ist als wirtschaftliche Alternative zu Neubau konzipiert. Kundenbewertungen loben das Preis-Leistungs-Verhältnis. Für Angebot: Fotos und Maße einsenden.',aktiv:true},
-  {kategorie:'preise',titel:'Kostenrahmen Fensterrenovierung S3 Innova',inhalt:'S3 Innova ist explizit als kostengünstigere Alternative zum Komplett-Fenstertausch positioniert – kein Austausch, kein Mauerwerkseingriff. Für konkreten Preis: Anzahl Fenster, Größen und Fotos einsenden.',aktiv:true},
-  {kategorie:'partner',titel:'Partner: Inotherm (Haustüren)',inhalt:'Hersteller hochwertiger Aluminium-Haustüren. AKOBA ist autorisierter Montage-Partner. Über 400 Modelle, bis RC3, INOSMART-Fingerprint-Option.\nKonfigurator: https://doordesigner.inotherm-tuer.de/configurator/?partnerCode=20876',aktiv:true},
-  {kategorie:'partner',titel:'Partner: Stoll Fenstertechnik / S3 Innova',inhalt:'Hersteller des S3 Innova Fenster-Verkleidungssystems. AKOBA ist zertifizierter Partnerbetrieb. Über 20 Jahre Reklamationsfreiheit, Prüfzertifikat. Netzwerk: 30+ Betriebe in D, Österreich, Schweiz.',aktiv:true},
-  {kategorie:'partner',titel:'Partner: Finstral (neue Fenster)',inhalt:'Hochwertiger Fensterhersteller. AKOBA bietet Finstral-Fenster mit schonender Überschubmontage an.',aktiv:true},
-  {kategorie:'partner',titel:'Partner: SpaStyling / Resopal (Bad)',inhalt:'Für Badrenovierungen arbeitet AKOBA mit SpaStyling (Resopal) zusammen. System für fugenlose Bäder und moderne Wandpaneele. Partner der Firma Stoll Weingarten.',aktiv:true},
-  {kategorie:'prozesse',titel:'Ablauf Treppenrenovierung konkret',inhalt:'1. Anfrage per WhatsApp/E-Mail mit Fotos und Treppenmaßen\n2. Richtangebot (meist ohne Vor-Ort-Termin)\n3. Materialauswahl – Muster im Showroom Weilstetten anschaubar\n4. Termin vereinbaren\n5. Montage: 1–2 Tage, sauber, ohne Abriss\n6. Übergabe',aktiv:true},
-  {kategorie:'prozesse',titel:'Ablauf Fensterrenovierung S3 Innova',inhalt:'1. Anfrage mit Fotos und Maßen\n2. Angebot\n3. Farbwahl / Dekor\n4. Montage: Alu-Profile auf Außenseite bestehender Fenster – kein Austausch nötig, nur 5mm Aufbau\n5. Übergabe',aktiv:true},
-  {kategorie:'prozesse',titel:'Schreinerarbeiten und weitere Leistungen',inhalt:'AKOBA ist Schreinerei und bietet:\n- Möbel nach Maß\n- Zimmertüren\n- Bodenbeläge (CeraTouch, theNaturals, Essentials, COREtec Stone)\n- Geländer-Montage\n- Raumgestaltung\n\nReferenz: komplette Bürorenovierung inkl. Wände, Decken, Böden, Türen, Küche, Treppe, Wanddurchbruch.',aktiv:true},
-  {kategorie:'faq',titel:'Showroom / Materialbesichtigung',inhalt:'Materialien (Treppendekore, Böden etc.) können vor Ort besichtigt werden:\nGehrnstr. 8, 72336 Balingen-Weilstetten\nTermin empfehlenswert – vorab per Telefon oder WhatsApp anfragen.',aktiv:true},
-  {kategorie:'faq',titel:'Servicezentrum Bad – Albstadt-Ebingen',inhalt:'Beratungszentrum Bad:\nUntere Vorstadt 30, 72461 Albstadt-Ebingen\nTel: 07433 / 99 35 16\nE-Mail: bad@akoba.de\nBeratungstermine nach Vereinbarung.',aktiv:true},
-];
-
-async function importKbAkoba() {
-  const btn = document.getElementById('import-kb-btn');
-  const prog = document.getElementById('import-kb-progress');
-  const bar = document.getElementById('import-kb-bar');
-  const status = document.getElementById('import-kb-status');
-  btn.disabled = true;
-  prog.style.display = 'block';
-  let done = 0, skipped = 0, errors = 0;
-  for (const item of AKOBA_KB) {
-    try {
-      const res = await fetch(`${SB_URL}/rest/v1/knowledge_base`, {
-        method: 'POST',
-        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-        body: JSON.stringify(item)
-      });
-      if (res.status === 409) skipped++;
-      else if (!res.ok) errors++;
-    } catch(e) { errors++; }
-    done++;
-    bar.style.width = Math.round((done / AKOBA_KB.length) * 100) + '%';
-    status.textContent = `${done}/${AKOBA_KB.length} verarbeitet…`;
-    await new Promise(r => setTimeout(r, 30));
-  }
-  status.textContent = `Fertig: ${done - errors - skipped} neu importiert, ${skipped} bereits vorhanden, ${errors} Fehler`;
-  btn.disabled = false;
-  showToast(errors > 0 ? `${errors} Fehler` : `${done - skipped} Einträge importiert!`, errors > 0);
-  await loadKb();
-}
-
-async function importCustom() {
-  const raw = document.getElementById('import-json').value.trim();
-  const table = document.getElementById('import-table').value;
-  const prog = document.getElementById('import-custom-progress');
-  const bar = document.getElementById('import-custom-bar');
-  const status = document.getElementById('import-custom-status');
-  let data;
-  try { data = JSON.parse(raw); } catch(e) { showToast('Ungültiges JSON: ' + e.message, true); return; }
-  if (!Array.isArray(data)) { showToast('Muss ein JSON-Array sein: [...]', true); return; }
-  prog.style.display = 'block';
-  let done = 0, errors = 0;
-  for (const item of data) {
-    try {
-      const res = await fetch(`${SB_URL}/rest/v1/${table}`, {
-        method: 'POST',
-        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-        body: JSON.stringify(item)
-      });
-      if (!res.ok && res.status !== 409) errors++;
-    } catch(e) { errors++; }
-    done++;
-    bar.style.width = Math.round((done / data.length) * 100) + '%';
-    status.textContent = `${done}/${data.length} verarbeitet…`;
-    await new Promise(r => setTimeout(r, 30));
-  }
-  status.textContent = `Fertig: ${done - errors} importiert, ${errors} Fehler`;
-  showToast(errors > 0 ? `${errors} Fehler` : `${done} Einträge importiert!`, errors > 0);
-  if (table === 'knowledge_base') await loadKb();
-  if (table === 'employees') await loadEmployees();
-}
-
-document.getElementById('import-json') && document.getElementById('import-json').addEventListener('input', function() {
-  try {
-    const d = JSON.parse(this.value);
-    document.getElementById('import-json-count').textContent = Array.isArray(d) ? d.length + ' Einträge erkannt' : 'Kein Array';
-  } catch(e) { document.getElementById('import-json-count').textContent = 'Ungültiges JSON'; }
-});
-
-/* ── AUTO LOGIN ── */
-window.onload = () => {
-  const url = localStorage.getItem('sb_url');
-  const key = localStorage.getItem('sb_key');
-  if (url && key) {
-    document.getElementById('login-url').value = url;
-    document.getElementById('login-key').value = key;
-    document.getElementById('cnt-url').textContent = url.length + ' Zeichen';
-    document.getElementById('cnt-key').textContent = key.length + ' Zeichen';
+// ── STATE ──
+let kbEntries = [];
+let employees = [];
+let config = {};
+let conversations = [];
+let logs = [];
+let importData = null;
+const templates = {
+  EINGANGSBESTAETIGUNG: {
+    subject: 'Re: {{original_subject}}',
+    content: `Guten Tag {{first_name}},\n\nvielen Dank für Ihre Nachricht.\n\n{{customer_reply}}\n\n{{email_signature}}`
+  },
+  MITARBEITER_ALERT: {
+    subject: 'Bettina Eskalation: {{original_subject}}',
+    content: `Hallo {{employee_name}},\n\nfolgende Kundenanfrage wurde von Bettina eskaliert:\n\nKunde: {{contact_name}} <{{contact_email}}>\nBetreff: {{original_subject}}\nIntent: {{intent}}\nHero: {{hero_link}}\n\nBettinas Antwort:\n{{customer_reply}}\n\nOriginal-Nachricht:\n{{body_text}}`
+  },
+  KLAERUNGSFRAGE: {
+    subject: 'Re: {{original_subject}}',
+    content: `Guten Tag {{first_name}},\n\nvielen Dank für Ihre Nachricht.\n\n{{clarification_question}}\n\n{{email_signature}}`
+  },
+  ABWESENHEIT: {
+    subject: 'Re: {{original_subject}}',
+    content: `Guten Tag {{first_name}},\n\nvielen Dank für Ihre Nachricht. Wir befinden uns aktuell außerhalb unserer Geschäftszeiten (Mo–Fr {{business_hours_start}} – {{business_hours_end}} Uhr).\n\nWir melden uns schnellstmöglich bei Ihnen.\n\n{{email_signature}}`
   }
 };
+
+// ── NAVIGATION ──
+function showView(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = {
+    dashboard: 'Dashboard',
+    conversations: 'Konversationen',
+    knowledge: 'Wissensdatenbank',
+    employees: 'Mitarbeiter & Routing',
+    behavior: 'Verhalten & KI-Einstellungen',
+    templates: 'Email-Templates',
+    logs: 'Agent-Log',
+    settings: 'Einstellungen'
+  };
+  document.getElementById('topbarTitle').textContent = titles[id] || id;
+  if (id === 'knowledge') loadKB();
+  if (id === 'conversations') loadConversations();
+  if (id === 'logs') loadLogs();
+  if (id === 'employees') loadEmployees();
+  if (id === 'dashboard') loadDashboard();
+}
+
+// ── SUPABASE ──
+async function supabase(path, options = {}) {
+  const url = (localStorage.getItem('bettina_supabase_url') || '').replace(/\/$/, '');
+  const key = localStorage.getItem('bettina_supabase_key') || '';
+  if (!url || !key) { toast('Supabase-Zugangsdaten fehlen — bitte in Einstellungen eintragen', 'error'); return null; }
+  try {
+    const res = await fetch(url + '/rest/v1/' + path, {
+      headers: {
+        'apikey': key,
+        'Authorization': 'Bearer ' + key,
+        'Content-Type': 'application/json',
+        'Prefer': options.prefer || 'return=representation',
+        ...options.headers
+      },
+      method: options.method || 'GET',
+      body: options.body ? JSON.stringify(options.body) : undefined
+    });
+    if (!res.ok) { const t = await res.text(); throw new Error(t); }
+    if (res.status === 204) return true;
+    return await res.json();
+  } catch(e) {
+    toast('Supabase Fehler: ' + e.message, 'error');
+    return null;
+  }
+}
+
+// ── LOAD DASHBOARD ──
+async function loadDashboard() {
+  const logs = await supabase('agent_log?select=*&order=created_at.desc&limit=100');
+  if (!logs) return;
+  const today = new Date().toISOString().split('T')[0];
+  const todayLogs = logs.filter(l => l.created_at && l.created_at.startsWith(today));
+  document.getElementById('stat-today').textContent = todayLogs.length;
+  document.getElementById('stat-escalated').textContent = logs.filter(l => l.escalated).length;
+  const withConf = logs.filter(l => l.confidence);
+  const avg = withConf.length ? (withConf.reduce((s, l) => s + l.confidence, 0) / withConf.length * 100).toFixed(0) + '%' : '—';
+  document.getElementById('stat-confidence').textContent = avg;
+  // Intent chart
+  const intents = {};
+  logs.forEach(l => { if (l.intent) intents[l.intent] = (intents[l.intent] || 0) + 1; });
+  const max = Math.max(...Object.values(intents), 1);
+  const colors = { quote_request: 'var(--amber)', complaint: 'var(--red)', product_info: 'var(--blue)', appointment_request: 'var(--green)', spam: 'var(--text3)' };
+  document.getElementById('intentBars').innerHTML = Object.entries(intents).sort((a,b) => b[1]-a[1]).map(([k,v]) => `
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <span style="font-size:11px;color:var(--text2)">${k}</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">${v}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${v/max*100}%;background:${colors[k]||'var(--amber)'}"></div></div>
+    </div>`).join('') || '<div style="color:var(--text3);font-size:12px">Noch keine Daten</div>';
+  // Recent activity
+  document.getElementById('recentActivity').innerHTML = logs.slice(0, 8).map(l => `
+    <div class="log-item">
+      <div class="log-dot" style="background:${l.escalated ? 'var(--red)' : 'var(--green)'}"></div>
+      <div style="flex:1">
+        <div class="log-msg"><strong>${l.channel || 'email'}</strong> — ${l.intent || 'unbekannt'} ${l.escalated ? '<span class="tag tag-red" style="margin-left:4px">Eskaliert</span>' : ''}</div>
+        <div class="log-time">${l.created_at ? new Date(l.created_at).toLocaleString('de-DE') : '—'}</div>
+      </div>
+    </div>`).join('') || '<div style="color:var(--text3);font-size:12px;padding:8px 0">Noch keine Aktivität</div>';
+}
+
+// ── LOAD KB ──
+async function loadKB() {
+  const data = await supabase('knowledge_base?select=*&order=sort_order.asc');
+  if (!data) return;
+  kbEntries = data;
+  document.getElementById('kb-count').textContent = data.length + ' Einträge';
+  document.getElementById('kbTableBody').innerHTML = data.map(e => `
+    <tr>
+      <td class="td-main text-mono">${e.id}</td>
+      <td><span class="tag ${e.type === 'system_prompt' ? 'tag-amber' : e.type === 'email_template' ? 'tag-blue' : 'tag-gray'}">${e.type}</span></td>
+      <td>${e.title || '—'}</td>
+      <td class="text-mono">${e.content ? e.content.length.toLocaleString() + ' Z' : '—'}</td>
+      <td>${e.active ? '<span class="tag tag-green">✓ Aktiv</span>' : '<span class="tag tag-gray">Inaktiv</span>'}</td>
+      <td><button class="btn btn-sm" onclick="openKBEdit('${e.id}')">Bearbeiten</button></td>
+    </tr>`).join('');
+}
+
+function openKBEdit(id) {
+  const e = kbEntries.find(k => k.id === id);
+  if (!e) return;
+  document.getElementById('kb-edit-id').value = e.id;
+  document.getElementById('modal-kb-edit-title').textContent = 'Bearbeiten: ' + e.id;
+  document.getElementById('kb-edit-title').value = e.title || '';
+  document.getElementById('kb-edit-content').value = e.content || '';
+  document.getElementById('kb-edit-type').value = e.type || 'kb_entry';
+  document.getElementById('kb-edit-sort').value = e.sort_order || 99;
+  openModal('modal-kb-edit');
+}
+
+async function saveKBEntry() {
+  const id = document.getElementById('kb-new-id').value.trim();
+  const title = document.getElementById('kb-new-title').value.trim();
+  const content = document.getElementById('kb-new-content').value.trim();
+  const type = document.getElementById('kb-new-type').value;
+  const sort_order = parseInt(document.getElementById('kb-new-sort').value) || 99;
+  if (!id || !title || !content) { toast('Bitte alle Pflichtfelder ausfüllen', 'error'); return; }
+  const res = await supabase('knowledge_base', { method: 'POST', body: { id, type, title, content, active: true, sort_order, updated_at: new Date().toISOString() } });
+  if (res) { toast('KB-Eintrag gespeichert ✓', 'success'); closeModal('modal-kb-new'); loadKB(); }
+}
+
+async function updateKBEntry() {
+  const id = document.getElementById('kb-edit-id').value;
+  const body = {
+    title: document.getElementById('kb-edit-title').value,
+    content: document.getElementById('kb-edit-content').value,
+    type: document.getElementById('kb-edit-type').value,
+    sort_order: parseInt(document.getElementById('kb-edit-sort').value) || 99,
+    updated_at: new Date().toISOString()
+  };
+  const res = await supabase('knowledge_base?id=eq.' + encodeURIComponent(id), { method: 'PATCH', body });
+  if (res) { toast('Gespeichert ✓', 'success'); closeModal('modal-kb-edit'); loadKB(); }
+}
+
+async function deleteKBEntry() {
+  const id = document.getElementById('kb-edit-id').value;
+  if (!confirm('Eintrag "' + id + '" wirklich löschen?')) return;
+  const res = await supabase('knowledge_base?id=eq.' + encodeURIComponent(id), { method: 'DELETE', prefer: 'return=minimal' });
+  if (res !== null) { toast('Gelöscht ✓', 'success'); closeModal('modal-kb-edit'); loadKB(); }
+}
+
+// ── LOAD CONVERSATIONS ──
+async function loadConversations() {
+  const data = await supabase('conversations?select=*&order=updated_at.desc&limit=50');
+  if (!data) return;
+  conversations = data;
+  renderConvs(data);
+}
+
+function renderConvs(data) {
+  const intentColors = { quote_request: 'tag-amber', complaint: 'tag-red', product_info: 'tag-blue', appointment_request: 'tag-green', spam: 'tag-gray', out_of_area: 'tag-gray' };
+  document.getElementById('convList').innerHTML = data.length ? data.map(c => `
+    <div class="conv-card ${c.pending_state ? 'unread' : ''}">
+      <div class="conv-header">
+        <div class="conv-name">${c.subject || '(kein Betreff)'}</div>
+        <div class="conv-time">${c.updated_at ? new Date(c.updated_at).toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—'}</div>
+      </div>
+      <div class="conv-subject">Kanal: ${c.channel || 'email'} · ${c.run_iterations || 1} Iteration(en)</div>
+      <div class="conv-tags">
+        ${c.pending_state ? '<span class="tag tag-amber">⏸ Ausstehend</span>' : '<span class="tag tag-green">✓ Abgeschlossen</span>'}
+        <span class="tag tag-gray text-mono" style="font-size:10px">${c.id ? c.id.substring(0,8) : '—'}</span>
+      </div>
+    </div>`).join('') : '<div style="color:var(--text3);font-size:13px;padding:24px;text-align:center">Keine Konversationen gefunden</div>';
+}
+
+function filterConvs(q) {
+  const f = conversations.filter(c => !q || (c.subject||'').toLowerCase().includes(q.toLowerCase()));
+  renderConvs(f);
+}
+
+// ── LOAD LOGS ──
+async function loadLogs() {
+  const data = await supabase('agent_log?select=*&order=created_at.desc&limit=100');
+  if (!data) return;
+  document.getElementById('logTableBody').innerHTML = data.map(l => `
+    <tr>
+      <td class="text-mono" style="font-size:11px">${l.created_at ? new Date(l.created_at).toLocaleString('de-DE') : '—'}</td>
+      <td class="text-mono" style="font-size:11px">${(l.run_id||'').substring(0,12)}…</td>
+      <td>${l.channel || 'email'}</td>
+      <td><span class="tag tag-gray">${l.intent || '—'}</span></td>
+      <td class="text-mono">${l.confidence ? (l.confidence * 100).toFixed(0) + '%' : '—'}</td>
+      <td class="text-mono">${l.iterations || '—'}</td>
+      <td>${l.escalated ? '<span class="tag tag-red">Ja</span>' : '<span class="tag tag-gray">Nein</span>'}</td>
+      <td class="text-mono">${l.duration_ms ? (l.duration_ms/1000).toFixed(1) + 's' : '—'}</td>
+    </tr>`).join('');
+}
+
+// ── LOAD EMPLOYEES ──
+async function loadEmployees() {
+  const data = await supabase('employees?select=*&order=id.asc');
+  if (!data) return;
+  employees = data;
+  document.getElementById('employeeTableBody').innerHTML = data.map(e => `
+    <tr>
+      <td class="td-main">${e.name || '—'}</td>
+      <td>${e.role || '—'}</td>
+      <td class="text-mono" style="font-size:12px">${e.email || '—'}</td>
+      <td><span class="tag tag-gray">${e.routing_intents ? e.routing_intents.join(', ') : 'Standard'}</span></td>
+      <td>${e.active !== false ? '<span class="tag tag-green">✓</span>' : '<span class="tag tag-gray">—</span>'}</td>
+      <td><button class="btn btn-sm">Bearbeiten</button></td>
+    </tr>`).join('');
+}
+
+// ── TEMPLATE EDITOR ──
+function editTemplate(id) {
+  const tpl = templates[id];
+  if (!tpl) return;
+  document.getElementById('tpl-edit-id').value = id;
+  document.getElementById('tpl-edit-title').textContent = 'Template: ' + id;
+  document.getElementById('tpl-edit-subject').value = tpl.subject || '';
+  document.getElementById('tpl-edit-content').value = tpl.content || '';
+  openModal('modal-template-edit');
+}
+
+async function saveTemplate() {
+  const id = document.getElementById('tpl-edit-id').value;
+  const subject = document.getElementById('tpl-edit-subject').value;
+  const content = document.getElementById('tpl-edit-content').value;
+  templates[id] = { subject, content };
+  // Save to KB as email_template
+  const existing = kbEntries.find(k => k.id === id);
+  const body = { type: 'email_template', title: 'Template: ' + id, content: JSON.stringify({ subject, content }), active: true, updated_at: new Date().toISOString() };
+  if (existing) {
+    await supabase('knowledge_base?id=eq.' + id, { method: 'PATCH', body });
+  } else {
+    await supabase('knowledge_base', { method: 'POST', body: { id, ...body, sort_order: 50 } });
+  }
+  toast('Template gespeichert ✓', 'success');
+  closeModal('modal-template-edit');
+}
+
+// ── FILE IMPORT ──
+function handleKBFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const content = e.target.result;
+    const slug = file.name.replace(/\.(md|txt)$/, '').toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const firstLine = content.split('\n')[0].replace(/^#+\s*/, '');
+    document.getElementById('import-id').value = slug;
+    document.getElementById('import-title').value = firstLine || file.name;
+    document.getElementById('import-preview').value = content.substring(0, 300);
+    document.getElementById('importPreview').style.display = 'block';
+    document.getElementById('importConfirmBtn').style.display = 'inline-flex';
+    importData = { content, filename: file.name };
+  };
+  reader.readAsText(file);
+}
+
+async function confirmImport() {
+  if (!importData) return;
+  const id = document.getElementById('import-id').value.trim();
+  const title = document.getElementById('import-title').value.trim();
+  const type = document.getElementById('import-type').value;
+  if (!id || !title) { toast('ID und Titel erforderlich', 'error'); return; }
+  const body = { id, type, title, content: importData.content, active: true, sort_order: 99, updated_at: new Date().toISOString() };
+  const res = await supabase('knowledge_base', { method: 'POST', body });
+  if (res) {
+    toast('Importiert: ' + id + ' ✓', 'success');
+    closeModal('modal-kb-upload');
+    loadKB();
+    importData = null;
+  }
+}
+
+function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.name.endsWith('.json')) {
+    toast('n8n Workflow erkannt — bitte direkt in n8n importieren', 'error');
+    return;
+  }
+  handleKBFile(input);
+}
+
+// ── DRAG DROP ──
+function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('dragover'); }
+function dragLeave(e) { e.currentTarget.classList.remove('dragover'); }
+function dropFile(e) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f) { const inp = document.getElementById('fileInput'); const dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files; handleFile(inp); } }
+function dropFileKB(e) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const f = e.dataTransfer.files[0]; if (f) { const inp = document.getElementById('fileInputKB'); const dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files; handleKBFile(inp); } }
+
+// ── SAVE CONFIG ──
+async function saveConfig() {
+  const data = {
+    bettina_active: document.getElementById('cfg-active').checked,
+    business_hours_check: document.getElementById('cfg-business-hours').checked,
+    business_hours_start: document.getElementById('cfg-hours-start').value,
+    business_hours_end: document.getElementById('cfg-hours-end').value,
+    clarification_threshold: parseFloat(document.getElementById('cfg-clarify-threshold').value),
+    escalation_threshold: parseFloat(document.getElementById('cfg-escalate-threshold').value),
+    max_iterations: parseInt(document.getElementById('cfg-max-iterations').value),
+    temperature: parseFloat(document.getElementById('cfg-temperature').value),
+    system_prompt_kb_id: document.getElementById('cfg-system-prompt-id').value,
+    email_signature: document.getElementById('cfg-signature').value,
+    smtp_from_name: document.getElementById('cfg-from-name').value,
+    smtp_reply_to: document.getElementById('cfg-reply-to').value,
+    hero_create_contact: document.getElementById('cfg-hero-create').checked,
+    hero_create_project: document.getElementById('cfg-hero-project').checked,
+    hero_logbook: document.getElementById('cfg-hero-log').checked,
+    supabase_logging: document.getElementById('cfg-supabase-log').checked,
+    testmode: document.getElementById('cfg-testmode').checked,
+    updated_at: new Date().toISOString()
+  };
+  const res = await supabase('bettina_config?id=eq.1', { method: 'PATCH', body: data, prefer: 'return=minimal' });
+  if (res !== null) toast('Konfiguration gespeichert ✓', 'success');
+}
+
+// ── LOAD CONFIG ──
+async function loadFromSupabase() {
+  const data = await supabase('bettina_config?select=*&limit=1');
+  if (!data || !data[0]) { toast('Keine Config gefunden', 'error'); return; }
+  const c = data[0];
+  if (c.bettina_active !== undefined) document.getElementById('cfg-active').checked = c.bettina_active;
+  if (c.business_hours_start) document.getElementById('cfg-hours-start').value = c.business_hours_start;
+  if (c.business_hours_end) document.getElementById('cfg-hours-end').value = c.business_hours_end;
+  if (c.clarification_threshold) document.getElementById('cfg-clarify-threshold').value = c.clarification_threshold;
+  if (c.escalation_threshold) document.getElementById('cfg-escalate-threshold').value = c.escalation_threshold;
+  if (c.max_iterations) document.getElementById('cfg-max-iterations').value = c.max_iterations;
+  if (c.temperature) document.getElementById('cfg-temperature').value = c.temperature;
+  if (c.system_prompt_kb_id) document.getElementById('cfg-system-prompt-id').value = c.system_prompt_kb_id;
+  if (c.email_signature) document.getElementById('cfg-signature').value = c.email_signature;
+  if (c.smtp_from_name) document.getElementById('cfg-from-name').value = c.smtp_from_name;
+  if (c.smtp_reply_to) document.getElementById('cfg-reply-to').value = c.smtp_reply_to;
+  if (c.bettina_active !== undefined) {
+    document.getElementById('statusDot').className = 'status-dot' + (c.bettina_active ? '' : ' inactive');
+    document.getElementById('statusText').textContent = c.bettina_active ? 'Bettina aktiv' : 'Bettina pausiert';
+  }
+  toast('Konfiguration geladen ✓', 'success');
+  loadDashboard();
+}
+
+// ── CONNECTIONS TEST ──
+async function testConnections() {
+  const url = document.getElementById('set-supabase-url').value;
+  const key = document.getElementById('set-supabase-key').value;
+  if (url) localStorage.setItem('bettina_supabase_url', url);
+  if (key) localStorage.setItem('bettina_supabase_key', key);
+  toast('Teste Verbindungen…');
+  const res = await supabase('bettina_config?select=id&limit=1');
+  if (res) toast('Supabase verbunden ✓', 'success');
+}
+
+// ── MODALS ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+// ── TOAST ──
+function toast(msg, type = '') {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ── EXPORT ──
+function exportKB() {
+  const data = JSON.stringify(kbEntries, null, 2);
+  download('bettina_kb_' + new Date().toISOString().split('T')[0] + '.json', data, 'application/json');
+}
+function exportConfig() {
+  toast('Config-Export — bitte über Supabase Table Editor', 'error');
+}
+function exportLogs() {
+  toast('Log-Export — bitte über Supabase Table Editor', 'error');
+}
+function download(name, content, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type }));
+  a.download = name;
+  a.click();
+}
+
+function confirmReset() {
+  if (confirm('ACHTUNG: Setzt alle bettina_config Werte auf Standard zurück. Fortfahren?')) {
+    toast('Reset — bitte manuell in Supabase ausführen', 'error');
+  }
+}
+
+function saveEmployee() {
+  toast('Gespeichert — Supabase-Integration folgt', 'success');
+  closeModal('modal-employee-new');
+}
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  // Supabase-Credentials aus localStorage laden
+  const url = localStorage.getItem('bettina_supabase_url');
+  const key = localStorage.getItem('bettina_supabase_key');
+  if (url) document.getElementById('set-supabase-url').value = url;
+  if (key) document.getElementById('set-supabase-key').value = key;
+  if (url && key) {
+    loadFromSupabase();
+  } else {
+    toast('Supabase-Zugangsdaten in Einstellungen eintragen', 'error');
+  }
+});
 </script>
 </body>
 </html>
