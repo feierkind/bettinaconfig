@@ -1614,49 +1614,72 @@ function dropFileKB(e) { e.preventDefault(); e.currentTarget.classList.remove('d
 
 // ── SAVE CONFIG ──
 async function saveConfig() {
-  const data = {
-    bettina_active: document.getElementById('cfg-active').checked,
-    business_hours_check: document.getElementById('cfg-business-hours').checked,
-    business_hours_start: document.getElementById('cfg-hours-start').value,
-    business_hours_end: document.getElementById('cfg-hours-end').value,
-    clarification_threshold: parseFloat(document.getElementById('cfg-clarify-threshold').value),
-    escalation_threshold: parseFloat(document.getElementById('cfg-escalate-threshold').value),
-    max_iterations: parseInt(document.getElementById('cfg-max-iterations').value),
-    temperature: parseFloat(document.getElementById('cfg-temperature').value),
-    system_prompt_kb_id: document.getElementById('cfg-system-prompt-id').value,
-    email_signature: document.getElementById('cfg-signature').value,
-    smtp_from_name: document.getElementById('cfg-from-name').value,
-    smtp_reply_to: document.getElementById('cfg-reply-to').value,
-    hero_create_contact: document.getElementById('cfg-hero-create').checked,
-    hero_create_project: document.getElementById('cfg-hero-project').checked,
-    hero_logbook: document.getElementById('cfg-hero-log').checked,
-    supabase_logging: document.getElementById('cfg-supabase-log').checked,
-    testmode: document.getElementById('cfg-testmode').checked,
-    updated_at: new Date().toISOString()
-  };
-  const res = await supabase('bettina_config?id=eq.1', { method: 'PATCH', body: data, prefer: 'return=minimal' });
+  // Key-Value Struktur: jeden Key einzeln upserten
+  const updates = [
+    { key: 'bettina_active',         value: document.getElementById('cfg-active').checked },
+    { key: 'business_hours_check',   value: document.getElementById('cfg-business-hours').checked },
+    { key: 'business_hours_start',   value: document.getElementById('cfg-hours-start').value },
+    { key: 'business_hours_end',     value: document.getElementById('cfg-hours-end').value },
+    { key: 'clarification_threshold',value: parseFloat(document.getElementById('cfg-clarify-threshold').value) },
+    { key: 'escalation_threshold',   value: parseFloat(document.getElementById('cfg-escalate-threshold').value) },
+    { key: 'max_iterations',         value: parseInt(document.getElementById('cfg-max-iterations').value) },
+    { key: 'temperature',            value: parseFloat(document.getElementById('cfg-temperature').value) },
+    { key: 'system_prompt_kb_id',    value: document.getElementById('cfg-system-prompt-id').value },
+    { key: 'email_signature',        value: document.getElementById('cfg-signature').value },
+    { key: 'smtp_from_name',         value: document.getElementById('cfg-from-name').value },
+    { key: 'smtp_reply_to',          value: document.getElementById('cfg-reply-to').value },
+    { key: 'hero_create_contact',    value: document.getElementById('cfg-hero-create').checked },
+    { key: 'hero_create_project',    value: document.getElementById('cfg-hero-project').checked },
+    { key: 'hero_logbook',           value: document.getElementById('cfg-hero-log').checked },
+    { key: 'supabase_logging',       value: document.getElementById('cfg-supabase-log').checked },
+    { key: 'testmode',               value: document.getElementById('cfg-testmode').checked },
+  ];
+  // Supabase upsert: POST mit Prefer: resolution=merge-duplicates
+  const rows = updates.map(u => ({ key: u.key, value: u.value, updated_at: new Date().toISOString() }));
+  const res = await supabase('bettina_config', {
+    method: 'POST',
+    body: rows,
+    prefer: 'resolution=merge-duplicates,return=minimal'
+  });
   if (res !== null) toast('Konfiguration gespeichert ✓', 'success');
 }
 
 // ── LOAD CONFIG ──
+// Config ist Key-Value: { key, value (jsonb), ... }
+function cfg(rows, key) {
+  const row = rows.find(r => r.key === key);
+  return row ? row.value : undefined;
+}
+
 async function loadFromSupabase() {
-  const data = await supabase('bettina_config?select=*&limit=1');
-  if (!data || !data[0]) { toast('Keine Config gefunden', 'error'); return; }
-  const c = data[0];
-  if (c.bettina_active !== undefined) document.getElementById('cfg-active').checked = c.bettina_active;
-  if (c.business_hours_start) document.getElementById('cfg-hours-start').value = c.business_hours_start;
-  if (c.business_hours_end) document.getElementById('cfg-hours-end').value = c.business_hours_end;
-  if (c.clarification_threshold) document.getElementById('cfg-clarify-threshold').value = c.clarification_threshold;
-  if (c.escalation_threshold) document.getElementById('cfg-escalate-threshold').value = c.escalation_threshold;
-  if (c.max_iterations) document.getElementById('cfg-max-iterations').value = c.max_iterations;
-  if (c.temperature) document.getElementById('cfg-temperature').value = c.temperature;
-  if (c.system_prompt_kb_id) document.getElementById('cfg-system-prompt-id').value = c.system_prompt_kb_id;
-  if (c.email_signature) document.getElementById('cfg-signature').value = c.email_signature;
-  if (c.smtp_from_name) document.getElementById('cfg-from-name').value = c.smtp_from_name;
-  if (c.smtp_reply_to) document.getElementById('cfg-reply-to').value = c.smtp_reply_to;
-  if (c.bettina_active !== undefined) {
-    document.getElementById('statusDot').className = 'status-dot' + (c.bettina_active ? '' : ' inactive');
-    document.getElementById('statusText').textContent = c.bettina_active ? 'Bettina aktiv' : 'Bettina pausiert';
+  const data = await supabase('bettina_config?select=*&order=sort_order.asc');
+  if (!data) return;
+  config = {};
+  data.forEach(r => { config[r.key] = r.value; });
+
+  const get = key => config[key];
+
+  if (get('bettina_active') !== undefined) document.getElementById('cfg-active').checked = get('bettina_active');
+  if (get('business_hours_start')) document.getElementById('cfg-hours-start').value = get('business_hours_start');
+  if (get('business_hours_end')) document.getElementById('cfg-hours-end').value = get('business_hours_end');
+  if (get('clarification_threshold') !== undefined) document.getElementById('cfg-clarify-threshold').value = get('clarification_threshold');
+  if (get('escalation_threshold') !== undefined) document.getElementById('cfg-escalate-threshold').value = get('escalation_threshold');
+  if (get('max_iterations') !== undefined) document.getElementById('cfg-max-iterations').value = get('max_iterations');
+  if (get('temperature') !== undefined) document.getElementById('cfg-temperature').value = get('temperature');
+  if (get('system_prompt_kb_id')) document.getElementById('cfg-system-prompt-id').value = get('system_prompt_kb_id');
+  if (get('email_signature')) document.getElementById('cfg-signature').value = get('email_signature');
+  if (get('smtp_from_name')) document.getElementById('cfg-from-name').value = get('smtp_from_name');
+  if (get('smtp_reply_to')) document.getElementById('cfg-reply-to').value = get('smtp_reply_to');
+  if (get('hero_create_contact') !== undefined) document.getElementById('cfg-hero-create').checked = get('hero_create_contact');
+  if (get('hero_create_project') !== undefined) document.getElementById('cfg-hero-project').checked = get('hero_create_project');
+  if (get('hero_logbook') !== undefined) document.getElementById('cfg-hero-log').checked = get('hero_logbook');
+  if (get('supabase_logging') !== undefined) document.getElementById('cfg-supabase-log').checked = get('supabase_logging');
+  if (get('testmode') !== undefined) document.getElementById('cfg-testmode').checked = get('testmode');
+
+  const active = get('bettina_active');
+  if (active !== undefined) {
+    document.getElementById('statusDot').className = 'status-dot' + (active ? '' : ' inactive');
+    document.getElementById('statusText').textContent = active ? 'Bettina aktiv' : 'Bettina pausiert';
   }
   toast('Konfiguration geladen ✓', 'success');
   loadDashboard();
